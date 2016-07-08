@@ -1,26 +1,37 @@
-Ionic App Base
-=====================
+## Dependencies
 
-A starting project for Ionic that optionally supports using custom SCSS.
+Node:
+https://nodejs.org/en/
+
+cordova:
+```bash
+npm install -g cordova, 
+```
+
+ionic (Mobile app framework based on AngularJS for cordova):
+```bash
+npm install -g cordova ionic
+```
 
 ## Using this project
 
-We recommend using the [Ionic CLI](https://github.com/driftyco/ionic-cli) to create new Ionic projects that are based on this project but use a ready-made starter template.
-
-For example, to start a new Ionic project with the default tabs interface, make sure the `ionic` utility is installed:
-
 ```bash
-$ npm install -g ionic
+ionic build ios
 ```
 
 Then run: 
-
 ```bash
-$ ionic start myProject tabs
+ionic emulate ios
 ```
 
-More info on this can be found on the Ionic [Getting Started](http://ionicframework.com/getting-started) page and the [Ionic CLI](https://github.com/driftyco/ionic-cli) repo.
+## Debug with chrome
 
-## Issues
-Issues have been disabled on this repo, if you do find an issue or have a question consider posting it on the [Ionic Forum](http://forum.ionicframework.com/).  Or else if there is truly an error, follow our guidelines for [submitting an issue](http://ionicframework.com/submit-issue/) to the main Ionic repository.
-# snack
+```bash
+gulp
+```
+
+Then open your chrome and go to http://localhost:8080
+
+## Note
+I initialized this ionic project with its basic "tabs hello world" template, we can change it. 
+
