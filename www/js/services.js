@@ -1,5 +1,21 @@
 angular.module('starter.services', [])
 
+
+.factory('UserGrid', function() {
+  var client = new Usergrid.Client({
+    orgName:'org',
+    appName:'sandbox',
+    logging: true, // Optional - turn on logging, off by default
+    buildCurl: true // Optional - turn on curl commands, off by default
+  });
+
+  return {
+    client: function () {
+      return client;
+    }
+  };
+})
+
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 
