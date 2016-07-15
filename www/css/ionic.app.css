@@ -4263,7 +4263,7 @@ a.subdued {
   top: 0;
   border-top-width: 0;
   border-bottom-width: 1px;
-  background-color: #009688;
+  background-color: #00796B;
   color: white;
 }
   .bar-header.has-tabs-top {
@@ -5856,11 +5856,12 @@ button.item.item-complex {
   z-index: 2;
   padding: 16px 49px 16px 16px;
   border: none;
-  background-color: #ffffff; }
+  font-weight: bold;
+  background-color: #00796B; }
 
 a.item-content {
   display: block;
-  color: inherit;
+  color: white;
   text-decoration: none; }
 
 .item-text-wrap .item,
