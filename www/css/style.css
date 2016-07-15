@@ -7,9 +7,14 @@
     font-weight: bold;
 }
 
-.tile  {
+.tile-top  {
     background-color: #009688;
-    border-radius: 5%;
+    margin: 0 10%;
+    border: 0;
+}
+
+.tile-bottom  {
+    background-color: white;
     margin: 0 10%;
 }
 
