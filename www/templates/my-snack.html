@@ -26,21 +26,21 @@
             <input type="checkbox" style="margin-left: 5%; margin-right: 2%">Disliked
         </div>
 
-        ///TODO: change shopping_items to snack history
         <div>
             <ion-list>
                 <ion-item class="item-avatar item-icon-right" type="item-text-wrap" ng-repeat="x in shopping_items">
                     <img src={{x.image}}>
-                    <p align="left" style="">{{x.name}}</p>
+                  <p align="left" style="padding-top:2.5mm">{{x.name}}</p>
 
-                    <i class="icon ion-thumbsup" style="zoom: 50%; margin-right: 10%"></i>
-                    <i class="icon ion-thumbsdown" style="zoom: 50%; margin-bottom: 10%"></i>
-                    <label class="toggle" style="zoom: 50%; float: right">
-                        <input type="checkbox" ng-if=x.purchased style="float:right;" checked>
-                        <div class="track">
-                            <div class="handle"></div>
-                        </div>
-                    </label>
+                  <i class="icon ion-thumbsup" style="zoom: 50%; margin-right: 7%"></i>
+                  <i class="icon ion-thumbsdown" style="zoom: 50%; margin-bottom: 7%"></i>
+                  <label class="toggle" style="zoom: 50%;">
+                    <input type="checkbox" ng-if=x.purchased style="" checked>
+                    <input type="checkbox" ng-if=!x.purchased style="">
+                      <div class="track">
+                          <div class="handle"></div>
+                      </div>
+                  </label>
 
 
                 </ion-item>
