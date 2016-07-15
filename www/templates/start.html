@@ -1,38 +1,37 @@
+
 <!--
   #TIP: in this case we hide the navbar provided by navigation system.
 -->
-<ion-view hide-nav-bar="true">
-  
-  <!-- 
-    #IMPLEMENTATION-DETAIL
-    We are using custom classes in "scss/scaffolding.scss"
-  -->
-  <ion-content class="padding full-height">
-    <h1 class="text-center black-color home-title">
-        Snack-A-Thon
-    </h1>
+<ion-view style="background-color: #009688" hide-nav-bar="true" view-title="Welcome">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
 
-    <!--
-      #IMPLEMENTATION-DETAIL:
-      we are wrapping the login button in an ionic grid in order
-      to keep it centered and quite large
-    -->
+    <div class="start-header text-center">Welcome</div>
 
-    <div class="row">
-        <div class="col col-20"></div>
-        <div class="col">
-            <button class="button button-large button-positive button-block" ui-sref="app.login" style="top: 250px">LOGIN</button>
+    <ion-content class="padding full-height">
+        <h1 class="text-center home-title" style="margin-top: 10%">
+            <img src="../img/LogoCropped.png" style="width: 50%; height: 50%">
+        </h1>
+
+        <div class="text-center" style="margin: 0 10%; color: white;">
+            <p>Find snacks you didn't know you loved using our Snack-a-thon app!</p>
         </div>
-        <div class="col col-20"></div>
-    </div>
 
-  </ion-content>
+        <div class="row">
+            <div class="col col-25"></div>
+            <div class="col">
+                <button class="button button-balanced button-block" ui-sref="app.login" style="margin-top: 30%; font-weight: bold">LOGIN</button>
+            </div>
+            <div class="col col-25"></div>
+        </div>
 
-  <!--
-   We put a link to signup screen in footer bar.
-  -->
-  <ion-footer-bar ui-sref="app.signup" class="bar bar-positive bar-deepblue-bordertop pointer">
-    <h1 class="title sans-pro-light">Signup here</h1>
-  </ion-footer-bar>
+        <div class="text-center" style="margin:5%; color: white; font-size: x-small">
+            <p>Don't have an account?</p>
+        </div>
+
+        <div ui-sref="app.signup" class="text-center" style="color: white; font-weight: bold">
+            <p>SIGNUP</p>
+        </div>
+
+    </ion-content>
 
 </ion-view>

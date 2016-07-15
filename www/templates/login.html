@@ -4,31 +4,35 @@
 <ion-view hide-nav-bar="true">
   
   <!-- in our custom header bar we give a link to start screen -->
-  <ion-header-bar>
-    <button ui-sref="app.start"><i class="black-color ion-arrow-left-c"></i></button>
-    <h2 class="title">Login</h2>
+  <ion-header-bar style="background-color: #009688">
+    <button ui-sref="app.start"><i class="white-color ion-arrow-left-c"></i></button>
+    <h1 class="title" style="color: white; font-weight: bold">Log In</h1>
   </ion-header-bar>
 
-  <ion-content class="has-header has-footer padding full-height text-center">
+  <ion-content class="has-header padding full-height text-center" style="background-color: #D8D8D8; border-color: #009688">
 
-    <h3 class="sans-pro-light">Enter your credentials</h3>
-    <label class="item item-input">
-        <input type="text" placeholder="email">
-    </label>
-    <label class="item item-input">
-        <input type="password" placeholder="password">
-    </label>
-    <!--
-      #SIMPLIFIED-IMPLEMENTATION:
-      login just sets an user! (see controllers.js for more)
-    -->
-    <button class="button button-block button-positive" ng-click="login()">LOGIN</button>
-    
   </ion-content>
 
-  <!-- we put the forgot password link in the footer -->
-  <ion-footer-bar ui-sref="app.forgot" class="black-color bar-positive">
-    <h1 class="title sans-pro-light">Forgot password?</h1>
-  </ion-footer-bar>
+  <ion-content class="text-center" style="background-color: #009688; height: 40%">
+    <img src="../img/LogoCropped.png" style="width: 30%; height: 30%; margin-top: 10%">
+  </ion-content>
+
+  <ion-content class="text-center" style="margin: 55% auto auto auto; z-index: 10000; background-color: white; width: 80%">
+    <div class="text-center" style="margin: 12% 7%">
+      <p class="text-center">Please enter your username and password to start snackin'</p>
+      <label class="item item-input" style="border-color: white; border-bottom-color: red">
+        <input type="text" placeholder="your username">
+      </label>
+      <label class="item item-input" style="border-color: white; border-bottom-color: red; margin-top: 1%">
+        <input type="password" placeholder="your password">
+      </label>
+      <!--
+        #SIMPLIFIED-IMPLEMENTATION:
+        login just sets an user! (see controllers.js for more)
+      -->
+      <button class="button button-block button-assertive" ng-click="login()" style="margin-top: 15%; font-weight: bold">LOGIN</button>
+    </div>
+
+  </ion-content>
 
 </ion-view>

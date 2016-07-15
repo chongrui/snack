@@ -3,43 +3,41 @@
 -->
 <ion-view hide-nav-bar="true">
 
-  <ion-header-bar class="bar bar-deepblue bar-deepblue-borderbottom">
-    <button ui-sref="app.start" class="button button-clear button-deepblue-white"><i class="white-color ion-arrow-left-c"></i></button>
-    <h2 class="title">Signup</h2>
+  <!-- in our custom header bar we give a link to start screen -->
+  <ion-header-bar style="background-color: #009688">
+    <button ui-sref="app.start"><i class="white-color ion-arrow-left-c"></i></button>
+    <h1 class="title" style="color: white; font-weight: bold">Sign Up</h1>
   </ion-header-bar>
 
-  <ion-content class="has-header has-footer padding full-height text-center">
+  <ion-content class="has-header padding full-height text-center" style="background-color: #D8D8D8; border-color: #009688">
 
-    <div style="padding-top:50px;">
-    <h3 class="sans-pro-light">Please provide this information</h3>
-
-    <label class="item item-input">
-        <input type="text" placeholder="Your name">
-    </label>
-    <label class="item item-input">
-        <input type="text" placeholder="email">
-    </label>
-    <label class="item item-input">
-        <input type="password" placeholder="password">
-    </label>
-    <label class="item item-input">
-        <input type="password" placeholder="repeat password">
-    </label>
-
-    <!--
-      #NOT-IMPLEMENTED:
-      the button does nothing, implementation is up to you!
-    -->
-    <button class="button button-block button-energized" ui-sref="app.account">SIGNUP</button>
-    
-    </div>
-    
-    
   </ion-content>
 
-  <!-- we provide a link back to login in footer bar -->
-  <ion-footer-bar class="bar bar-deepblue bar-deepblue-bordertop pointer" ui-sref="app.login">
-    <h1 class="title sans-pro-light">Login</h1>
-  </ion-footer-bar>
+  <ion-content class="text-center" style="background-color: #009688; height: 40%">
+    <img src="../img/LogoCropped.png" style="width: 30%; height: 30%; margin-top: 10%">
+  </ion-content>
+
+  <ion-content class="text-center" style="margin: 55% auto auto auto; z-index: 10000; background-color: white; width: 80%">
+    <div class="text-center" style="margin: 12% 7%">
+      <p class="text-center" style="text-align: justify; font-size: small">
+        New to Snack-a-thon? No problem! Just enter your email address, choose a user name, and create a password to get snackin' right away!
+      </p>
+      <label class="item item-input" style="border-color: white; border-bottom-color: red">
+        <input type="text" placeholder="Your email address">
+      </label>
+      <label class="item item-input" style="border-color: white; border-bottom-color: red; margin-top: 1%">
+        <input type="text" placeholder="Create a user name">
+      </label>
+      <label class="item item-input" style="border-color: white; border-bottom-color: red; margin-top: 1%">
+        <input type="password" placeholder="Create a password">
+      </label>
+      <!--
+        #SIMPLIFIED-IMPLEMENTATION:
+        login just sets an user! (see controllers.js for more)
+      -->
+      <button class="button button-block button-assertive" ng-click="login()" style="margin-top: 15%; font-weight: bold">SIGNUP</button>
+    </div>
+
+  </ion-content>
 
 </ion-view>

@@ -1,1 +1,8 @@
-/* Empty. Add your own CSS if you like */
+.start-header {
+    background: #00796B;
+    color: #ffffff; height: 55px;
+    padding-top: 15px;
+    font-family: Arial;
+    font-size: 150%;
+    font-weight: bold;
+}

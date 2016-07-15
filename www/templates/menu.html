@@ -17,7 +17,7 @@
       </ion-nav-back-button>
       -->
       <ion-nav-buttons side="left" >
-        <button class="black-color button button-icon ion-navicon" menu-toggle="left">
+        <button class="white-color button button-icon ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
@@ -32,16 +32,16 @@
       we are using our custom bar classes here
       see scss/themed.scss for implementation.
     -->
-    <ion-content>
+    <ion-content style="background-color: #009688">
       <ion-list>
         <!-- #TIP: 
           Menu items are wrapped In the following <ion-list>. 
           Each one has attribute "menu-close" set in order to automatically close side menu on click 
         -->
-        <ion-item ng-show="user.avatar" menu-close href="#/app/account" class="item-menu-avatar text-center">
+        <ion-item ng-show="user.avatar" menu-close href="#/app/account" class="item-menu-avatar text-center" style="background-color: #009688">
           <img ng-src="{{user.avatar}}" class="avatar-menu">
         </ion-item>
-        <ion-item menu-close class="menu-positive text-center" href="#/app/account">
+        <ion-item menu-close class="menu-positive text-center" href="#/app/account" style="background-color: #009688">
           <b>{{ user.email }}</b>
         </ion-item>
         <ion-item menu-close href="#/app/feed">
@@ -54,10 +54,7 @@
           Shopping List
         </ion-item>
         <ion-item menu-close href="#/app/preference">
-          Preference
-        </ion-item>
-        <ion-item menu-close href="#/app/setting">
-          Setting
+          Preferences
         </ion-item>
 
       </ion-list>
