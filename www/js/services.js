@@ -103,6 +103,429 @@ angular.module('deepBlue.services', [])
     };
   })
 
+  .factory('FeedbackService', function(UserGridService) {
+    function calculateScore(snackPreferences, userPreferences) {
+      var score = 0;
+      if(snackPreferences) {
+        _.each(snackPreferences, function (snackPreference) {
+          if (_.indexOf(userPreferences, snackPreference) > -1) {
+            score++;
+          }
+        });
+      }
+      return score;
+    }
+    function updateSnackGroup(snackGroups, snackId, addToRequest) {
+      _.each(snackGroups, function(groupId) {
+
+        var groups = UserGridService.generateNewCollection("snackgroups");
+
+        groups.qs = {ql: "select * where uuid='" + groupId + "'"};
+        groups.fetch(
+          function (err, data) {
+            var snackGroup = _.first(data.entities);
+            var snackItem = _.find(snackGroup.requestedSnacks, function(snack) { return snackId === snack.id; });
+            var purchasedSnackItem = _.find(snackGroup.purchasedSnacks, function(snack) { return snackId === snack.id; });
+            if(purchasedSnackItem) {
+              if(addToRequest) {
+                purchasedSnackItem.numOfRequested = purchasedSnackItem.numOfRequested++;
+              }
+              else {
+                purchasedSnackItem.numOfRequested = purchasedSnackItem.numOfRequested--;
+                if(purchasedSnackItem.numOfRequested === 0) {
+                  _.remove(snackGroup.purchasedSnacks, function(snack) { return snackId === snack.id; });
+                }
+              }
+            }
+            else if(snackItem) {
+              if(addToRequest) {
+                snackItem.numOfRequested = snackItem.numOfRequested++;
+              }
+              else {
+                snackItem.numOfRequested = snackItem.numOfRequested--;
+                if(snackItem.numOfRequested === 0) {
+                  _.remove(snackGroup.requestedSnacks, function(snack) { return snackId === snack.id; });
+                }
+              }
+            }
+            else {
+              var requestedSnack = {
+                id: snackId,
+                numOfRequested: 1
+              };
+              snackGroup.requestedSnacks.push(requestedSnack);
+            }
+
+            var properties = {
+              client: UserGridService.getClient(),
+              data: {
+                type: 'snackgroups',
+                uuid: groupId,
+                purchasedSnacks: snackGroup.purchasedSnacks,
+                requestedSnacks: snackGroup.requestedSnacks
+              }
+            };
+
+            var entity = new Usergrid.Entity(properties);
+            entity.save(function (error, result) {
+
+              if (error) {
+                //error
+              } else {
+                //success
+              }
+            });
+          }
+        );
+      });
+    }
+    return {
+      updateRequest: function(snackId, removable) {
+        UserGridService.getClient().getLoggedInUser(function(err, data, user) {
+          if(err) {
+            // Error - could not get logged in user
+          } else {
+            // Success - got logged in user
+
+            // You can then get info from the user entity object:
+            var uuid = user.get('uuid');
+
+            var snacks = UserGridService.generateNewCollection("snackusers");
+
+            snacks.qs = {ql: "select * where userGridId='" + uuid + "'"};
+            snacks.fetch(
+              function (err, data) {
+                if (err) {
+                  console.log("Couldn't get the list of snacks.");
+                } else {
+                  var userSnacks = _.first(data.entities);
+                  var snack = _.find(userSnacks.snacks, function(snack) { return snack.uuid === snackId; });
+                  if(snack) {
+                    if(snack.requested === 1 && !removable) {
+                      return;
+                    }
+                    snack.requested = snack.requested === 1 ? 0 : 1;
+                    var properties = {
+                      client: UserGridService.getClient(),
+                      data: {
+                        type: 'snackusers',
+                        uuid: userSnacks.uuid,
+                        snacks: userSnacks.snacks
+                      }
+                    };
+
+                    var entity = new Usergrid.Entity(properties);
+                    entity.save(function (error, result) {
+
+                      if (error) {
+                        //error
+                      } else {
+                        //success
+                      }
+                    });
+                  }
+                  else {
+                    var snacks = UserGridService.generateNewCollection("snacks");
+
+                    snacks.qs = {ql: "select * where uuid='" + snackId + "'"};
+                    snacks.fetch(
+                      function (err, data) {
+                        var score = calculateScore(_.first(data.entities).preferences, userSnacks.preferences);
+                        var snackItem = {
+                          like: 0,
+                          dislike: 0,
+                          requested: 1,
+                          snackId: snackId,
+                          score: score
+                        };
+                        if(!userSnacks.snacks) {
+                          userSnacks.snacks = [snackItem];
+                        }
+                        else {
+                          userSnacks.snacks.push(snackItem);
+                        }
+                        var properties = {
+                          client: UserGridService.getClient(),
+                          data: {
+                            type: 'snackusers',
+                            uuid: userSnacks.uuid,
+                            snacks: userSnacks.snacks
+                          }
+                        };
+
+                        var entity = new Usergrid.Entity(properties);
+                        entity.save(function (error, result) {
+
+                          if (error) {
+                            //error
+                          } else {
+                            //success
+                          }
+                        });
+                      }
+                  );
+                  }
+                }
+              }
+            );
+          }
+        });
+      },
+      updateLike: function(snackId) {
+        UserGridService.getClient().getLoggedInUser(function(err, data, user) {
+          if(err) {
+            // Error - could not get logged in user
+          } else {
+            // Success - got logged in user
+
+            // You can then get info from the user entity object:
+            var uuid = user.get('uuid');
+
+            var snacks = UserGridService.generateNewCollection("snackusers");
+
+            snacks.qs = {ql: "select * where userGridId='" + uuid + "'"};
+            snacks.fetch(
+              function (err, data) {
+                if (err) {
+                  console.log("Couldn't get the list of snacks.");
+                } else {
+                  var userSnacks = _.first(data.entities);
+                  var allSnacks = UserGridService.generateNewCollection("snacks");
+
+                  allSnacks.qs = {ql: "select * where uuid='" + snackId + "'", limit:1000};
+                  allSnacks.fetch(function (err, data) {
+                  if (err) {
+                    console.log("Couldn't get the list of snacks.");
+                  } else {
+                  var snackEntry = _.first(data.entities);
+
+                  var snack = _.find(userSnacks.snacks, function(snack) { return snack.uuid === snackId; });
+                  if(snack && snack.like === 1) {
+                    return;
+                  }
+                  if(snack) {
+                    var numDislike = snackEntry.dislike;
+                    if(snack.dislike === 1) {
+                      numDislike = numDislike--;
+                    }
+                    snack.like = 1;
+                    snack.dislike = 0;
+                    var properties = {
+                      client: UserGridService.getClient(),
+                      data: {
+                        type: 'snackusers',
+                        uuid: userSnacks.uuid,
+                        snacks: userSnacks.snacks
+                      }
+                    };
+
+                    var entity = new Usergrid.Entity(properties);
+                    entity.save(function (error, result) {
+
+                      if (error) {
+                        //error
+                      } else {
+                        //success
+                      }
+                    });
+                  }
+                  else {
+                    var snacks = UserGridService.generateNewCollection("snacks");
+
+                    snacks.qs = {ql: "select * where uuid='" + snackId + "'"};
+                    snacks.fetch(
+                      function (err, data) {
+                        var score = calculateScore(_.first(data.entities).preferences, userSnacks.preferences);
+                        var snackItem = {
+                          like: 1,
+                          dislike: 0,
+                          requested: 0,
+                          snackId: snackId,
+                          score: score
+                        };
+                        if(!userSnacks.snacks) {
+                          userSnacks.snacks = [snackItem];
+                        }
+                        else {
+                          userSnacks.snacks.push(snackItem);
+                        }
+                        var properties = {
+                          client: UserGridService.getClient(),
+                          data: {
+                            type: 'snackusers',
+                            uuid: userSnacks.uuid,
+                            snacks: userSnacks.snacks
+                          }
+                        };
+
+                        var entity = new Usergrid.Entity(properties);
+                        entity.save(function (error, result) {
+
+                          if (error) {
+                            //error
+                          } else {
+                            //success
+                          }
+                        });
+                      }
+                    );
+                  }
+                      properties = {
+                        client: UserGridService.getClient(),
+                        data: {
+                          type: 'snacks',
+                          uuid: userSnacks.snackId,
+                          likes: snackEntry.likes++,
+                          dislikes: numDislike
+                        }
+                      };
+
+                      entity = new Usergrid.Entity(properties);
+                      entity.save(function (error, result) {
+
+                        if (error) {
+                          //error
+                        } else {
+                          //success
+                        }
+                      });
+                    }
+                  });
+                }
+              }
+            );
+          }
+        });
+      },
+      updateDislike: function(snackId) {
+        UserGridService.getClient().getLoggedInUser(function(err, data, user) {
+          if(err) {
+            // Error - could not get logged in user
+          } else {
+            // Success - got logged in user
+
+            // You can then get info from the user entity object:
+            var uuid = user.get('uuid');
+
+            var snacks = UserGridService.generateNewCollection("snackusers");
+
+            snacks.qs = {ql: "select * where userGridId='" + uuid + "'"};
+            snacks.fetch(
+              function (err, data) {
+                if (err) {
+                  console.log("Couldn't get the list of snacks.");
+                } else {
+                  var userSnacks = _.first(data.entities);
+                  var allSnacks = UserGridService.generateNewCollection("snacks");
+
+                  allSnacks.qs = {ql: "select * where uuid='" + snackId + "'", limit:1000};
+                  allSnacks.fetch(function (err, data) {
+                    if (err) {
+                      console.log("Couldn't get the list of snacks.");
+                    } else {
+                      var snackEntry = _.first(data.entities);
+
+                      var snack = _.find(userSnacks.snacks, function(snack) { return snack.uuid === snackId; });
+                      if(snack && snack.dislike === 1) {
+                        return;
+                      }
+                      if(snack) {
+                        var numLike = snackEntry.like;
+                        if(snack.like === 1) {
+                          numLike = snackEntry.like--;
+                        }
+                        snack.like = 0;
+                        snack.dislike = 1;
+                        var properties = {
+                          client: UserGridService.getClient(),
+                          data: {
+                            type: 'snackusers',
+                            uuid: userSnacks.uuid,
+                            snacks: userSnacks.snacks
+                          }
+                        };
+
+                        var entity = new Usergrid.Entity(properties);
+                        entity.save(function (error, result) {
+
+                          if (error) {
+                            //error
+                          } else {
+                            //success
+                          }
+                        });
+                      }
+                      else {
+                        var snacks = UserGridService.generateNewCollection("snacks");
+
+                        snacks.qs = {ql: "select * where uuid='" + snackId + "'"};
+                        snacks.fetch(
+                          function (err, data) {
+                            var score = calculateScore(_.first(data.entities).preferences, userSnacks.preferences);
+                            var snackItem = {
+                              like: 0,
+                              dislike: 1,
+                              requested: 0,
+                              snackId: snackId,
+                              score: score
+                            };
+                            if(!userSnacks.snacks) {
+                              userSnacks.snacks = [snackItem];
+                            }
+                            else {
+                              userSnacks.snacks.push(snackItem);
+                            }
+                            var properties = {
+                              client: UserGridService.getClient(),
+                              data: {
+                                type: 'snackusers',
+                                uuid: userSnacks.uuid,
+                                snacks: userSnacks.snacks
+                              }
+                            };
+
+                            var entity = new Usergrid.Entity(properties);
+                            entity.save(function (error, result) {
+
+                              if (error) {
+                                //error
+                              } else {
+                                //success
+                              }
+                            });
+                            updateSnackGroup(userSnacks.snackGroups, snackId, 1)
+                          }
+                        );
+                      }
+                      properties = {
+                        client: UserGridService.getClient(),
+                        data: {
+                          type: 'snacks',
+                          uuid: userSnacks.snackId,
+                          dislikes: snackEntry.dislikes++,
+                          likes: numLike
+                        }
+                      };
+
+                      entity = new Usergrid.Entity(properties);
+                      entity.save(function (error, result) {
+
+                        if (error) {
+                          //error
+                        } else {
+                          //success
+                        }
+                      });
+                    }
+                  });
+                }
+              }
+            );
+          }
+        });
+      }
+    }
+  })
   .factory('RecommendationService', function (UserGridService) {
     function calculateScore(snackPreferences, userPreferences) {
       var score = 0;

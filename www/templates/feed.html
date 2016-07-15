@@ -53,7 +53,7 @@
 
 
         <ion-slide-box delegate-handle="$ionicSlideBoxDelegate" show-pager="false" style="width: 265px" >
-          <ion-slide ng-repeat="feed in dataModel.recommendedList">
+          <ion-slide ng-repeat="feed in dataModel.recommendedList" ng-init="updateSlides()">
             <div class="box blue"  style="width: 265px"><img src="{{feed.image}}" height="175" ></div>
 
             <a class="tab-item" style="position:absolute;top:5%;right:20%; zoom: 70%" on-tap="onTap()" >
@@ -75,8 +75,6 @@
             <a style="position:absolute;top:20%;right:10%">
               <i class="icon ion-ios-arrow-forward" style="color: white; zoom: 200%"></i>
             </a>
-
-            <a ng-show="updateSlides()"></a>
 
           </ion-slide>
         </ion-slide-box>

@@ -29,9 +29,9 @@
         <ion-list>
           <ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap" ng-repeat="x in displaySnacksList | orderBy:'numberOfRequested'">
             <img src={{x.image}}>
-            <p align="left" style="">{{x.name}}</p>
-            <input type="checkbox" ng-if=x.checked style="float:right;" checked>
-            <input type="checkbox" ng-if=!x.checked style="float:right;">
+            <p align="left" style="padding-top:2.5mm">{{x.name}}</p>
+            <input class="icon" type="checkbox" ng-if=x.checked ng-model="x.checked" style="float:right;" checked>
+            <input class="icon" type="checkbox" ng-if=!x.checked ng-model="x.checked" style="float:right;" ng-change="removeFromRequestedList(x)">
           </ion-item>
         </ion-list>
       </div>

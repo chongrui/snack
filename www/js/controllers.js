@@ -142,6 +142,7 @@ angular.module('deepBlue.controllers', [])
 
 // Feeds controller.
 .controller('FeedsCtrl', function($scope, BackendService, UserGridService, $ionicSlideBoxDelegate) {
+
     UserGridService.getClient().getLoggedInUser(function(err, data, user) {
       if(err) {
         // Error - could not get logged in user
@@ -151,11 +152,10 @@ angular.module('deepBlue.controllers', [])
         // You can then get info from the user entity object:
         var uuid = user.get('uuid');
 
-      var snacks = UserGridService.generateNewCollection("snackusers");
+        var allSnacks = UserGridService.generateNewCollection("snacks");
 
-      snacks.qs = {ql: "select * where uuid='" + uuid + "'"};
-      snacks.fetch(
-        function (err, data) {
+        allSnacks.qs = {limit:1000};
+        allSnacks.fetch(function (err, data) {
           if (err) {
             console.log("Couldn't get the list of snacks.");
           } else {
@@ -190,13 +190,12 @@ angular.module('deepBlue.controllers', [])
                     }
                   });
               }
-
             });
           }
-        }
-      );
+        });
     }
   });
+
 
 
   $scope.doRefresh = function(){
@@ -218,6 +217,68 @@ angular.module('deepBlue.controllers', [])
   }
 
 })
+
+  .controller('MySnacksCtrl', function($scope, UserGridService) {
+    UserGridService.getClient().getLoggedInUser(function(err, data, user) {
+      if(err) {
+        // Error - could not get logged in user
+      } else {
+        // Success - got logged in user
+
+        // You can then get info from the user entity object:
+        var uuid = user.get('uuid');
+
+        var snacks = UserGridService.generateNewCollection("snackusers");
+
+        snacks.qs = {ql: "select * where uuid='" + uuid + "'"};
+        snacks.fetch(
+          function (err, data) {
+            if (err) {
+              console.log("Couldn't get the list of snacks.");
+            } else {
+              var allSnacks = UserGridService.generateNewCollection("snacks");
+
+              allSnacks.qs = {limit:1000};
+              allSnacks.fetch(function (err, data) {
+                if (err) {
+                  console.log("Couldn't get the list of snacks.");
+                } else {
+                  allSnacks = data.entities;
+                  var snacks = UserGridService.generateNewCollection("snackusers");
+
+                  snacks.qs = {ql: "select * where userGridId='" + uuid + "'"};
+                  snacks.fetch(
+                    function (err, data) {
+                      var feedList = [];
+                      if (err) {
+                        console.log("Couldn't get the list of snacks.");
+                      } else {
+                        var mySnacksList = _.filter(_.first(data.entities).snacks, function(item) { return item.dislike === 1 || item.like === 1 || item.requested === 1; });
+                        _.each(mySnacksList, function(snackStatus) {
+                          var matchingSnack = _.find(allSnacks, function(snack) { return snack.uuid === snackStatus.snackId});
+                          if(matchingSnack) {
+                            matchingSnack.status = {
+                              like: snackStatus.like,
+                              dislike: snackStatus.dislike,
+                              requested: snackStatus.requested
+                            };
+                            feedList.push(matchingSnack);
+                          }
+                        });
+                        $scope.dataModel = {
+                          recommendedList: feedList
+                        }
+                      }
+                    });
+                }
+              });
+            }
+          }
+        );
+      }
+    });
+  })
+
 
 // controller for "app.cart" view
 .controller('CartCtrl', function($scope, CartService, $ionicListDelegate) {
@@ -259,7 +320,7 @@ angular.module('deepBlue.controllers', [])
 
 })
 
-.controller('ShoppingListCtrl', function($scope, UserGridService)  {
+.controller('ShoppingListCtrl', function($scope, UserGridService, FeedbackService)  {
   $scope.displaySnacksList = [];
 
   var cloneSnack = function (list, currentSnack, checked) {
@@ -280,6 +341,7 @@ angular.module('deepBlue.controllers', [])
 
   var totalRequestedSnacksList = [];
   var totalPurchasedSnacksList = [];
+
   groupsHaveCurrentUser.fetch(function(err, data) {
     _.forEach(data.entities, function (group) {
       console.log(data.entities);
@@ -308,6 +370,10 @@ angular.module('deepBlue.controllers', [])
 
   });
 
+  $scope.removeFromRequestedList= function (x) {
+    console.log(x.uuid);
+    FeedbackService.updateRequest(x.uuid, 1);
+  }
 
 
   $scope.groupName = "GROUP1";
