@@ -141,7 +141,7 @@ angular.module('deepBlue.controllers', [])
 
 
 // Feeds controller.
-.controller('FeedsCtrl', function($scope, BackendService, UserGridService) {
+.controller('FeedsCtrl', function($scope, BackendService, UserGridService, FeedbackService) {
     UserGridService.getClient().getLoggedInUser(function(err, data, user) {
       if(err) {
         // Error - could not get logged in user
@@ -151,50 +151,44 @@ angular.module('deepBlue.controllers', [])
         // You can then get info from the user entity object:
         var uuid = user.get('uuid');
 
-      var snacks = UserGridService.generateNewCollection("snackusers");
+        var allSnacks = UserGridService.generateNewCollection("snacks");
 
-      snacks.qs = {ql: "select * where uuid='" + uuid + "'"};
-      snacks.fetch(
-        function (err, data) {
+        allSnacks.qs = {limit:1000};
+        allSnacks.fetch(function (err, data) {
           if (err) {
             console.log("Couldn't get the list of snacks.");
           } else {
-            var allSnacks = UserGridService.generateNewCollection("snacks");
+            allSnacks = data.entities;
+            var snacks = UserGridService.generateNewCollection("snackusers");
 
-            allSnacks.qs = {limit:1000};
-            allSnacks.fetch(function (err, data) {
-              if (err) {
-                console.log("Couldn't get the list of snacks.");
-              } else {
-                allSnacks = data.entities;
-                var snacks = UserGridService.generateNewCollection("snackusers");
-
-                snacks.qs = {ql: "select * where userGridId='" + uuid + "'"};
-                snacks.fetch(
-                  function (err, data) {
-                    var feedList = [];
-                    if (err) {
-                      console.log("Couldn't get the list of snacks.");
-                    } else {
-                      var recommendedList = _.orderBy(_.filter(_.first(data.entities).snacks, function(item) { return item.dislike === 0 && item.like === 0 && item.requested === 0; }), ['score'], ['desc']);
-                      _.each(recommendedList, function(snackStatus) {
-                        var matchingSnack = _.find(allSnacks, function(snack) { return snack.uuid === snackStatus.snackId})
-                        if(matchingSnack) {
-                          feedList.push(matchingSnack);
-                        }
-                      });
-                      $scope.dataModel = {
-                        recommendedList: feedList.slice(0, 10)
-                      }
+            snacks.qs = {ql: "select * where userGridId='" + uuid + "'"};
+            snacks.fetch(
+              function (err, data) {
+                var feedList = [];
+                if (err) {
+                  console.log("Couldn't get the list of snacks.");
+                } else {
+                  var recommendedList = _.orderBy(_.filter(_.first(data.entities).snacks, function(item) { return item.dislike === 0 && item.like === 0 && item.requested === 0; }), ['score'], ['desc']);
+                  _.each(recommendedList, function(snackStatus) {
+                    var matchingSnack = _.find(allSnacks, function(snack) { return snack.uuid === snackStatus.snackId});
+                    if(matchingSnack) {
+                      feedList.push(matchingSnack);
                     }
                   });
-              }
-            });
+                  $scope.dataModel = {
+                    requestSnack: function() {
+                      FeedbackService.updateRequest(_.first(allSnacks).uuid);
+                    },
+                    snackOfTheWeek: _.first(allSnacks),
+                    recommendedList: feedList.slice(0, 10)
+                  }
+                }
+              });
           }
-        }
-      );
+        });
     }
   });
+
 
 
   $scope.doRefresh = function(){
@@ -212,6 +206,68 @@ angular.module('deepBlue.controllers', [])
   $scope.doRefresh();
 
 })
+
+  .controller('MySnacksCtrl', function($scope, UserGridService) {
+    UserGridService.getClient().getLoggedInUser(function(err, data, user) {
+      if(err) {
+        // Error - could not get logged in user
+      } else {
+        // Success - got logged in user
+
+        // You can then get info from the user entity object:
+        var uuid = user.get('uuid');
+
+        var snacks = UserGridService.generateNewCollection("snackusers");
+
+        snacks.qs = {ql: "select * where uuid='" + uuid + "'"};
+        snacks.fetch(
+          function (err, data) {
+            if (err) {
+              console.log("Couldn't get the list of snacks.");
+            } else {
+              var allSnacks = UserGridService.generateNewCollection("snacks");
+
+              allSnacks.qs = {limit:1000};
+              allSnacks.fetch(function (err, data) {
+                if (err) {
+                  console.log("Couldn't get the list of snacks.");
+                } else {
+                  allSnacks = data.entities;
+                  var snacks = UserGridService.generateNewCollection("snackusers");
+
+                  snacks.qs = {ql: "select * where userGridId='" + uuid + "'"};
+                  snacks.fetch(
+                    function (err, data) {
+                      var feedList = [];
+                      if (err) {
+                        console.log("Couldn't get the list of snacks.");
+                      } else {
+                        var mySnacksList = _.filter(_.first(data.entities).snacks, function(item) { return item.dislike === 1 || item.like === 1 || item.requested === 1; });
+                        _.each(mySnacksList, function(snackStatus) {
+                          var matchingSnack = _.find(allSnacks, function(snack) { return snack.uuid === snackStatus.snackId});
+                          if(matchingSnack) {
+                            matchingSnack.status = {
+                              like: snackStatus.like,
+                              dislike: snackStatus.dislike,
+                              requested: snackStatus.requested
+                            };
+                            feedList.push(matchingSnack);
+                          }
+                        });
+                        $scope.dataModel = {
+                          recommendedList: feedList
+                        }
+                      }
+                    });
+                }
+              });
+            }
+          }
+        );
+      }
+    });
+  })
+
 
 // controller for "app.cart" view
 .controller('CartCtrl', function($scope, CartService, $ionicListDelegate) {
