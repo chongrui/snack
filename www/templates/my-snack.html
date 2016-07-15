@@ -1,0 +1,52 @@
+<!--
+  #TIP: in this case we hide the navbar provided by navigation system.
+-->
+<ion-view view-title="My Snacks" hide-back-button="false">
+
+    <ion-content class="has-header padding full-height text-center" style="background-color: #D8D8D8; border-color: #009688">
+
+    </ion-content>
+
+    <ion-content class="text-center" style="background-color: #009688">
+        <div class="text-center" style="margin: 8% 20%">
+            <p class="text-center" style="color:white; text-align: justify; font-size: small">
+                Below are snacks that you've requested, liked, and disliked. Tried a snack and loved it or hated it? You can change the status here!
+            </p>
+        </div>
+    </ion-content>
+
+    <ion-content class="text-center" style="margin: 30% auto auto auto; z-index: 10000; background-color: white; width: 80%">
+        <div class="text-center" style="margin: 12% 7%">
+            <h4 class="text-center" style="font-size: small; margin-bottom: 10%"><b>Choose the filters that apply</b></h4>
+        </div>
+
+        <div style="margin-bottom: 10%; zoom: 80%">
+            <input type="checkbox" style="margin-right: 2%">Requested
+            <input type="checkbox" style="margin-left: 5%; margin-right: 2%">Liked
+            <input type="checkbox" style="margin-left: 5%; margin-right: 2%">Disliked
+        </div>
+
+        ///TODO: change shopping_items to snack history
+        <div>
+            <ion-list>
+                <ion-item class="item-avatar item-icon-right" type="item-text-wrap" ng-repeat="x in shopping_items">
+                    <img src={{x.image}}>
+                    <p align="left" style="">{{x.name}}</p>
+
+                    <i class="icon ion-thumbsup" style="zoom: 50%; margin-right: 10%"></i>
+                    <i class="icon ion-thumbsdown" style="zoom: 50%; margin-bottom: 10%"></i>
+                    <label class="toggle" style="zoom: 50%; float: right">
+                        <input type="checkbox" ng-if=x.purchased style="float:right;" checked>
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+
+
+                </ion-item>
+            </ion-list>
+        </div>
+
+    </ion-content>
+
+</ion-view>

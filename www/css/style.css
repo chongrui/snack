@@ -12,3 +12,14 @@
     border-radius: 5%;
     margin: 0 10%;
 }
+
+.pref {
+    color: black;
+    font-weight: bold;
+    margin-top: 10%
+}
+
+a{
+    color: black;
+    font-weight: bold;
+}

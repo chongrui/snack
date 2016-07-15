@@ -1,0 +1,119 @@
+<!--
+  #TIP: in this case we hide the navbar provided by navigation system.
+-->
+<ion-view view-title="Preferences" hide-back-button="false">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+    <ion-content class="has-header padding full-height text-center" style="background-color: #D8D8D8; border-color: #009688"></ion-content>
+
+    <ion-content class="text-center" style="background-color: #009688">
+        <div class="text-center" style="margin: 8% 20%">
+            <p class="text-center" style="color:white; text-align: justify; font-size: small">
+                Below are snacks that you've requested, liked, and disliked. Tried a snack and loved it or hated it? You can change the status here!
+            </p>
+        </div>
+
+        <div style="margin: -5% 15% 0 60% ">
+            <button class="button button-block button-assertive">Skip</button>
+        </div>
+    </ion-content>
+
+
+
+
+    <ion-content class="text-center" style="margin: 45% auto auto auto; z-index: 10000; background-color: white; width: 80%">
+        <div class="text-center" style="margin: 12% 7%">
+            <h4 class="text-center" style="font-size: small; margin-bottom: 10%"><b>Adjust each preference slider</b></h4>
+        </div>
+
+        <div>
+            <div class = "item range" style="border: 0">
+                <input type = "range" name = "range1" step="50">
+            </div>
+            <div>
+                <a style="float: left; margin-left: 5%">Sweet</a>
+                <a>Both</a>
+                <a style="float: right; margin-right: 5%">Savory</a>
+            </div>
+        </div>
+
+        <div class="pref" style="margin-top: 10%">
+            <p>Chewy or crunchy?</p>
+            <div class = "item range" style="border: 0">
+                <input type = "range" name = "range1" step="50">
+            </div>
+            <div>
+                <a style="float: left; margin-left: 5%">Chewy</a>
+                <a>Both</a>
+                <a style="float: right; margin-right: 5%">Crunchy</a>
+            </div>
+        </div>
+
+        <div class="pref">
+            <p>Mild or spicy?</p>
+            <div class = "item range" style="border: 0">
+                <input type = "range" name = "range1" step="50">
+            </div>
+            <div>
+                <a style="float: left; margin-left: 5%">Mild</a>
+                <a>Both</a>
+                <a style="float: right; margin-right: 5%">Spicy</a>
+            </div>
+        </div>
+
+        <div class="pref">
+            <p>Do you prefer low-card snacks?</p>
+            <div class = "item range" style="border: 0">
+                <input type = "range" name = "range1" step="50">
+            </div>
+            <div>
+                <a style="float: left; margin-left: 5%">Yes</a>
+                <a>Both</a>
+                <a style="float: right; margin-right: 5%">No</a>
+            </div>
+        </div>
+
+        <div class="pref">
+            <p>Do you prefer vegan snacks?</p>
+            <div class = "item range" style="border: 0">
+                <input type = "range" name = "range1" step="50">
+            </div>
+            <div>
+                <a style="float: left; margin-left: 5%">Yes</a>
+                <a>Both</a>
+                <a style="float: right; margin-right: 5%">No</a>
+            </div>
+        </div>
+
+        <div class="pref">
+            <p>Do you prefer organic snacks?</p>
+            <div class = "item range" style="border: 0">
+                <input type = "range" name = "range1" step="50">
+            </div>
+            <div>
+                <a style="float: left; margin-left: 5%">Yes</a>
+                <a>Both</a>
+                <a style="float: right; margin-right: 5%">No</a>
+            </div>
+        </div>
+
+        <div class="pref">
+            <p>Select any allergies that apply</p>
+            <div class = "item range" style="border: 0">
+                <input type = "range" name = "range1" step="33.3">
+            </div>
+            <div>
+                <a style="float: left; margin-left: 5%">Nut</a>
+                <a style="float: left; margin-left: 15%">Lactose</a>
+                <a style="float: right; margin-right: 5%">None</a>
+                <a style="float: right; margin-right: 15%">Both</a>
+            </div>
+        </div>
+
+    </ion-content>
+
+    <ion-footer-bar class="bar bar-assertive" ng-click="savePref()">
+        <h2 class="title">SAVE PREFERENCES</h2>
+    </ion-footer-bar>
+
+</ion-view>
