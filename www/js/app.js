@@ -35,13 +35,13 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
       #IMPLEMENTATION-DETAIL: views that require authorizations have an
       "auth" key with value = "true".
     */
-    $rootScope.$on('$stateChangeStart',
-      function(event, toState, toParams, fromState, fromParams){
-        if(toState.data && toState.data.auth == true && !$rootScope.user.email){
-          event.preventDefault();
-          $state.go('app.login');
-        }
-    });
+    //$rootScope.$on('$stateChangeStart',
+    //  function(event, toState, toParams, fromState, fromParams){
+    //    if(toState.data && toState.data.auth == true && !$rootScope.user.email){
+    //      event.preventDefault();
+    //      $state.go('app.login');
+    //    }
+    //});
 
   });
 })

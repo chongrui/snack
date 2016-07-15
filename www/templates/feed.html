@@ -36,10 +36,10 @@
 
 
           <div>
-            <a class="tab-item" style="position:absolute;top:10%;right:16%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
+            <a id="featuredLike" class="tab-item" style="position:absolute;top:10%;right:16%; zoom: 60%; z-index: 100005" ng-click="dataModel.like($event, dataModel.snackOfTheWeek, 'featuredLike', 'featuredDislike')" >
               <i class="icon ion-thumbsup"></i>
             </a>
-            <a class="tab-item" style="position:absolute;top:12%;right:6%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
+            <a id="featuredDislike" class="tab-item" style="position:absolute;top:12%;right:6%; zoom: 60%; z-index: 100005" ng-click="dataModel.dislike($event, dataModel.snackOfTheWeek, 'featuredLike', 'featuredDislike')" >
               <i class="icon ion-thumbsdown"></i>
             </a>
           </div>
@@ -76,10 +76,10 @@
               <button class="button button-small button-block button-assertive" style="position:relative; width: 50%; margin-left: auto; margin-right: auto; z-index: 10000; bottom: -42px" ng-click="dataModel.requestSnackFeed()">REQUEST!</button>
 
               <div>
-                <a class="tab-item" style="position:absolute;top:6%;right:16%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
+                <a id="thumbsUp{{$index}}" class="tab-item" style="position:absolute;top:6%;right:16%; zoom: 60%; z-index: 100005" ng-click="dataModel.like($event, feed, 'thumbsUp'+{{$index}}, 'thumbsDown'+{{$index}})" >
                   <i class="icon ion-thumbsup"></i>
                 </a>
-                <a class="tab-item" style="position:absolute;top:7%;right:6%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
+                <a id="thumpsDown{{index}}" class="tab-item" style="position:absolute;top:7%;right:6%; zoom: 60%; z-index: 100005" ng-click="dataModel.dislike($event, feed, 'thumbsUp'+{{$index}}, 'thumbsDown'+{{$index}})" >
                   <i class="icon ion-thumbsdown"></i>
                 </a>
               </div>
@@ -89,16 +89,8 @@
 
           </ion-slide>
         </ion-slide-box>
-
-g
-
-
       </div>
-
-
-
-    </div class="tile-top">
-
+    </div>
   </ion-content>
 </ion-view>
 

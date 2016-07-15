@@ -16,7 +16,7 @@
     </ion-content>
 
     <ion-content class="text-center" style="margin: 30% auto auto auto; z-index: 10000; background-color: white; width: 80%">
-        <div class="text-center" style="margin: 12% 7%">
+        <!--<div class="text-center" style="margin: 12% 7%">
             <h4 class="text-center" style="font-size: small; margin-bottom: 10%"><b>Choose the filters that apply</b></h4>
         </div>
 
@@ -25,14 +25,15 @@
             <input type="checkbox" style="margin-left: 5%; margin-right: 2%">Liked
             <input type="checkbox" style="margin-left: 5%; margin-right: 2%">Disliked
         </div>
-
+-->
         <div>
             <ion-list>
                 <ion-item class="item-avatar" type="item-text-wrap" ng-repeat="snack in dataModel.mySnackList">
                   <img src={{snack.image}}>
                   <p style="position: absolute; float:left; word-wrap: break-word; width: 9em">{{snack.name}}</p>
-                  <i class="icon ion-thumbsdown" style="zoom: 100%; margin-left: 5%; float:right;"></i>
-                  <i class="icon ion-thumbsup" style="zoom: 100%; float:right;"></i>
+                  <i id="thumpsDown"+{{$index}} class="icon ion-thumbsdown" style="zoom: 100%; margin-left: 5%; float:right;" ng-style="{'color': dataModel.likeTable[{{$index}}] === 1 ? '#00796B' : ''}" ng-click="dataModel.dislike($event, snack, 'thumbsUp'+{{$index}}, 'thumbsDown'+{{$index}})" ></i>
+                  <i id="thumpsUp"+{{$index}} class="icon ion-thumbsup" style="zoom: 100%; float:right;" ng-style="{'color': dataModel.likeTable[{{$index}}] === 0 ? 'hotpink' : ''}" ng-click="dataModel.like($event, snack, 'thumbsUp'+{{$index}}, 'thumbsDown'+{{$index}})" ></i>
+
                   <span style="zoom: 50%;bottom: 6mm;position:absolute;right:30mm;">Requested</span>
                   <label class="toggle" style="zoom: 50%;bottom: 6mm;position:absolute;right:12mm;" ng-click="dataModel.requestSnackFeed($index)">
                     <input type="checkbox" ng-if="dataModel.snackStatusList[$index].requested" style="" checked>

@@ -318,8 +318,8 @@ angular.module('deepBlue.controllers', [])
                 client: UserGridService.getClient(),
                 data: {
                   type: 'snackusers',
-                  uuid: uuid,
-                  preferences:newPreferencesList
+                  uuid: userNeedsToBeUpdated.uuid,
+                  preferences: newPreferencesList
                 }
               };
 
@@ -520,6 +520,7 @@ angular.module('deepBlue.controllers', [])
                       if (err) {
                         console.log("Couldn't get the list of snacks.");
                       } else {
+                        var likeTable = [];
                         var mySnacksList = _.filter(_.first(data.entities).snacks, function(item) { return item.dislike === 1 || item.like === 1 || item.requested === 1; });
                         _.each(mySnacksList, function(snackStatus) {
                           var matchingSnack = _.find(allSnacks, function(snack) { return snack.uuid === snackStatus.snackId});
@@ -530,11 +531,31 @@ angular.module('deepBlue.controllers', [])
                               requested: snackStatus.requested
                             };
                             feedList.push(matchingSnack);
+                            if(snackStatus.like) {
+                              likeTable.push(0);
+                            }
+                            else if(snackStatus.dislike) {
+                              likeTable.push(1);
+                            }
+                            else {
+                              likeTable.push(2);
+                            }
                           }
                         });
                         $scope.dataModel = {
                           snackStatusList: mySnacksList,
                           mySnackList: feedList,
+                          likeTable: likeTable,
+                          like: function($event, snack, likeId, dislikeId) {
+                            $('#'+dislikeId).css('color', 'gray');
+                            $('#'+likeId).css('color', 'hotpink');
+                            FeedbackService.updateLike(snack.uuid);
+                          },
+                          dislike: function($event, snack, likeId, dislikeId) {
+                            $('#'+likeId).css('color', 'gray');
+                            $('#'+dislikeId).css('color', '#00796B');
+                            FeedbackService.updateDislike(snack.uuid);
+                          },
                           requestSnackFeed: function(index) {
                             FeedbackService.updateRequest(feedList[index].uuid, 1);
                           }
