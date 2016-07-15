@@ -22,12 +22,12 @@
 
     <div class="tile" style="border: 5px">
       <div class="item item-image tile" style="border: 0; ">
-        <img ng-src="{{dataModel.snackOfTheWeek.image}}">
+        <img ng-src="{{dataModel.snackOfTheWeek.image}}" height="150" >
 
 
 
-        <div class="item item-text-wrap">
-          <h4 style="font-size: x-small; margin-right: 25%">{{feeds[0].name}}</h4>
+        <div class="item item-text-wrap" style="height: 175px">
+          <h4 style="font-size: x-small; margin-right: 25%">{{dataModel.snackOfTheWeek.name}}</h4>
           <p style="font-size: x-small">
             {{dataModel.snackOfTheWeek.description}}
           </p>
@@ -66,7 +66,7 @@
               <i class="icon ion-thumbsdown"></i>
             </a>
 
-            <div class="item item-text-wrap"  style="width: inherit" >
+            <div class="item item-text-wrap"  style="width: inherit; height: 150px" >
               <h4 style="font-size: x-small; margin-right: 25%">{{feed.name}}</h4>
               <p style="font-size: x-small; height: 175px">
                 {{feed.description}}
