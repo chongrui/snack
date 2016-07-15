@@ -225,7 +225,7 @@ angular.module('deepBlue.controllers', [])
 
 })
 
-  .controller('MySnacksCtrl', function($scope, UserGridService) {
+  .controller('MySnacksCtrl', function($scope, UserGridService, FeedbackService) {
     UserGridService.getClient().getLoggedInUser(function(err, data, user) {
       if(err) {
         // Error - could not get logged in user
@@ -273,7 +273,11 @@ angular.module('deepBlue.controllers', [])
                           }
                         });
                         $scope.dataModel = {
-                          recommendedList: feedList
+                          snackStatusList: mySnacksList,
+                          mySnackList: feedList,
+                          requestSnackFeed: function(index) {
+                            FeedbackService.updateRequest(feedList[index].uuid, 1);
+                          }
                         }
                       }
                     });
