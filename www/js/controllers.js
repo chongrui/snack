@@ -71,7 +71,7 @@ angular.module('deepBlue.controllers', [])
       avatar : 'sampledata/images/avatar.jpg'
     };
     //finally, we route our app to the 'app.shop' view
-    $state.go('app.shop');
+    $state.go('app.feed');
   };
 
 })
@@ -378,5 +378,6 @@ angular.module('deepBlue.controllers', [])
 
     return user_preferences;
   }
+
 });
 

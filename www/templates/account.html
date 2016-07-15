@@ -10,7 +10,7 @@
   <!-- main content -->
   <ion-content>
     
-    <div class=" text-center ui-gradient-deepblue padding">
+    <div class=" text-center padding" style="background-color: #009688">
         <img class="avatar-account" ng-src="{{user.avatar}}">
     </div>
     
@@ -52,13 +52,13 @@
       #IMPLEMENTATION-DETAIL:
       we switch footer bar when editing form data
     -->
-  <ion-footer-bar class="bar bar-positive" ng-click="startEdit()" ng-if="readonly">
+  <ion-footer-bar class="bar bar-assertive" ng-click="startEdit()" ng-if="readonly">
     <h2 class="title">Edit info</h2>
     <button ng-show="!readonly" class="button button-assertive" ng-click="saveEdit()" ng-disabled="accountForm.$invalid">Save changes</button>
   </ion-footer-bar>
 
-  <ion-footer-bar class="bar bar-positive" ng-if="!readonly">
-    <button ng-if="!readonly" class="button button-positive" ng-click="cancelEdit()">Cancel editing</button>
+  <ion-footer-bar class="bar bar-assertive" ng-if="!readonly">
+    <button ng-if="!readonly" class="button button-balanced" ng-click="cancelEdit()">Cancel editing</button>
     <h2 class="title"> </h2>
     <!--
       #IMPLEMENTATION-DETAIL:
