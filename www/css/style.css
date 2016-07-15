@@ -6,3 +6,9 @@
     font-size: 150%;
     font-weight: bold;
 }
+
+.tile  {
+    background-color: #009688;
+    border-radius: 5%;
+    margin: 0 10%;
+}
