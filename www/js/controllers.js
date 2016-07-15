@@ -20,7 +20,53 @@ angular.module('deepBlue.controllers', [])
 
 })
 
-// This controller is bound to the "app.account" view
+.controller('GroupCtrl', function($scope, $ionicPopup, $timeout)  {
+
+  $scope.showPopup = function() {
+    $scope.data = {}
+
+    // Custom popup
+    var myPopup = $ionicPopup.show({
+      template: '<input type = "text" ng-model = "data.model">',
+      title: 'Which User?',
+      scope: $scope,
+      buttons: [
+        { text: 'Cancel' }, {
+          text: 'Save',
+          type: 'button-positive',
+          onTap: function(e) {
+
+            if (!$scope.data.model) {
+              //don't allow the user to close unless he enters model...
+              e.preventDefault();
+            } else {
+              return $scope.data.model;
+            }
+          }
+        }
+      ]
+    });
+
+    myPopup.then(function(res) {
+      console.log('Tapped!', res);
+    });
+  };
+  $scope.groupName = "GROUP1";
+  $scope.users = [{
+    image: "../img/LogoCropped.png",
+    name: "hello",
+  },
+    {
+      image: "../img/LogoCropped.png",
+      name: "hello1",
+    },
+    {
+      image: "../img/LogoCropped.png",
+      name: "hello2",
+    }]
+})
+
+  // This controller is bound to the "app.account" view
 .controller('AccountCtrl', function($scope, $rootScope) {
 
   //readonly property is used to control editability of account form

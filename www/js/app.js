@@ -164,6 +164,19 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
     }
   })
 
+
+    .state('app.groups', {
+      url: '/groups',
+      data : { auth : true },
+      cache : false,
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/groups.html',
+          controller : 'GroupCtrl'
+        }
+      }
+    })
+
   // If none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/start');
 
