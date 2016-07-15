@@ -142,7 +142,6 @@ angular.module('deepBlue.controllers', [])
 
 // Feeds controller.
 .controller('FeedsCtrl', function($scope, BackendService, UserGridService, $ionicSlideBoxDelegate) {
-
     UserGridService.getClient().getLoggedInUser(function(err, data, user) {
       if(err) {
         // Error - could not get logged in user
@@ -372,8 +371,8 @@ angular.module('deepBlue.controllers', [])
 
   $scope.removeFromRequestedList= function (x) {
     console.log(x.uuid);
-    FeedbackService.updateRequest(x.uuid, 1);
-  }
+    FeedbackService.checkSnack('e68aea3d-49e9-11e6-a968-0242ac120004', x.uuid);
+  };
 
 
   $scope.groupName = "GROUP1";

@@ -153,7 +153,12 @@ angular.module('deepBlue.services', [])
                 id: snackId,
                 numOfRequested: 1
               };
-              snackGroup.requestedSnacks.push(requestedSnack);
+              if(!snackGroup.requestedSnacks) {
+                snackGroup.requestedSnacks = [requestedSnack];
+              }
+              else {
+                snackGroup.requestedSnacks.push(requestedSnack);
+              }
             }
 
             var properties = {
@@ -180,6 +185,61 @@ angular.module('deepBlue.services', [])
       });
     }
     return {
+      checkSnack: function(groupId, snackId) {
+        var groups = UserGridService.generateNewCollection("snackgroups");
+
+        groups.qs = {ql: "select * where uuid='" + groupId + "'"};
+        groups.fetch(
+          function (err, data) {
+            var snackGroup = _.first(data.entities);
+            var snackItem = _.find(snackGroup.requestedSnacks, function (snack) {
+              return snackId === snack.id;
+            });
+            var purchasedSnackItem = _.find(snackGroup.purchasedSnacks, function (snack) {
+              return snackId === snack.id;
+            });
+            if (purchasedSnackItem) {
+              if(snackGroup.requestedSnacks) {
+                snackGroup.requestedSnacks.push(purchasedSnackItem);
+              }
+              else {
+                snackGroup.requestedSnacks = [snackItem];
+              }
+              _.remove(snackGroup.purchasedSnacks, function (snack) {
+                return snackId === snack.id;
+              });
+            }
+            else {
+              if(snackGroup.purchasedSnacks) {
+                snackGroup.purchasedSnacks.push(snackItem);
+              }
+              else {
+                snackGroup.purchasedSnacks = [snackItem];
+              }
+              _.remove(snackGroup.requestedSnacks, function (snack) {
+                return snackId === snack.id;
+              });
+            }
+            var properties = {
+              client: UserGridService.getClient(),
+              data: {
+                type: 'snackgroups',
+                uuid: groupId,
+                requestedSnacks: snackGroup.requestedSnacks,
+                purchasedSnacks: snackGroup.purchasedSnacks
+              }
+            };
+
+            var entity = new Usergrid.Entity(properties);
+            entity.save(function (error, result) {
+              if (error) {
+                //error
+              } else {
+                //success
+              }
+            });
+          });
+      },
       updateRequest: function(snackId, removable) {
         UserGridService.getClient().getLoggedInUser(function(err, data, user) {
           if(err) {
@@ -199,7 +259,7 @@ angular.module('deepBlue.services', [])
                   console.log("Couldn't get the list of snacks.");
                 } else {
                   var userSnacks = _.first(data.entities);
-                  var snack = _.find(userSnacks.snacks, function(snack) { return snack.uuid === snackId; });
+                  var snack = _.find(userSnacks.snacks, function(snack) { return snack.snackId === snackId; });
                   if(snack) {
                     if(snack.requested === 1 && !removable) {
                       return;
@@ -223,6 +283,7 @@ angular.module('deepBlue.services', [])
                         //success
                       }
                     });
+                    updateSnackGroup(userSnacks.snackGroups, snackId, snack.requested)
                   }
                   else {
                     var snacks = UserGridService.generateNewCollection("snacks");
@@ -262,6 +323,7 @@ angular.module('deepBlue.services', [])
                             //success
                           }
                         });
+                        updateSnackGroup(userSnacks.snackGroups, snackId, 1)
                       }
                   );
                   }
@@ -493,7 +555,6 @@ angular.module('deepBlue.services', [])
                                 //success
                               }
                             });
-                            updateSnackGroup(userSnacks.snackGroups, snackId, 1)
                           }
                         );
                       }
@@ -544,61 +605,69 @@ angular.module('deepBlue.services', [])
 
         var recommendedList = [];
         var snackUser;
-        //Get preference table from userId
-        var userUuid = '6e75d074-49bd-11e6-a968-0242ac120004';
-        snackUser = UserGridService.generateNewCollection('snackusers');
+        UserGridService.getClient().getLoggedInUser(function(err, data, user) {
+          if(err) {
+            // Error - could not get logged in user
+          } else {
+            // Success - got logged in user
 
-        snackUser.qs = {ql: 'select * where userGridId=\'' + userUuid + '\''};
-        snackUser.fetch(function(err, data) {
-          var snackUser = _.first(data.entities);
-          var snacks = UserGridService.generateNewCollection('snacks')
-          snacks.qs = {limit:1000};
-          snacks.fetch(function (err, data) {
+            // You can then get info from the user entity object:
+            var uuid = user.get('uuid');
+            snackUser = UserGridService.generateNewCollection('snackusers');
 
-            snacks = data.entities;
-            if (!snackUser || !snackUser.snacks) {
-              //Get all snacks with filters
-              _.each(snacks, function (snack) {
-                var score = calculateScore(snack.preferences, snackUser.preferences);
-                var snackItem = {
-                  like: 0,
-                  dislike: 0,
-                  requested: 0,
-                  snackId: snack.uuid,
-                  score: score
+            snackUser.qs = {ql: 'select * where userGridId=\'' + uuid + '\''};
+            snackUser.fetch(function (err, data) {
+              var snackUser = _.first(data.entities);
+              var snacks = UserGridService.generateNewCollection('snacks');
+              snacks.qs = {limit: 1000};
+              snacks.fetch(function (err, data) {
+
+                snacks = data.entities;
+                if (!snackUser || !snackUser.snacks) {
+                  //Get all snacks with filters
+                  _.each(snacks, function (snack) {
+                    var score = calculateScore(snack.preferences, snackUser.preferences);
+                    var snackItem = {
+                      like: 0,
+                      dislike: 0,
+                      requested: 0,
+                      snackId: snack.uuid,
+                      score: score
+                    };
+
+                    recommendedList.push(snackItem);
+                  });
+                }
+                else {
+                  _.each(snackUser.snacks, function (snackStatus) {
+                    var snack = _.find(snacks, function (item) {
+                      return snackStatus.snackId === item.uuid
+                    });
+                    snackStatus.score = calculateScore(snack.preferences, snackUser.preferences);
+                  });
+                  recommendedList = snackUser.snacks;
+                }
+                var properties = {
+                  client: UserGridService.getClient(),
+                  data: {
+                    type: 'snackusers',
+                    uuid: snackUser.uuid,
+                    snacks: recommendedList
+                  }
                 };
 
-                recommendedList.push(snackItem);
-              });
-            }
-            else {
-              _.each(snackUser.snacks, function (snackStatus) {
-                var snack = _.find(snacks, function (item) {
-                  return snackStatus.snackId === item.uuid
+                var entity = new Usergrid.Entity(properties);
+                entity.save(function (error, result) {
+
+                  if (error) {
+                    //error
+                  } else {
+                    //success
+                  }
                 });
-                snackStatus.score = calculateScore(snack.preferences, snackUser.preferences);
               });
-              recommendedList = snackUser.snacks;
-            }
-            var properties = {
-              client: UserGridService.getClient(),
-              data: {
-                type: 'snackusers',
-                uuid: snackUser.uuid,
-                snacks: recommendedList
-              }
-            };
-
-            var entity = new Usergrid.Entity(properties);
-            entity.save(function (error, result) {
-
-              if (error) {
-                //error
-              } else {
-                //success
-              }
             });
-          });
+          }
         });
       }
     }
