@@ -11,7 +11,7 @@
 
 */
 
-angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'])
+angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services', 'rzModule'])
 
 .run(function($ionicPlatform, $rootScope, $timeout, $state) {
   $ionicPlatform.ready(function() {
@@ -157,7 +157,7 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
     views: {
       'menuContent': {
         templateUrl: 'templates/preference.html',
-        controller: 'ShoppingListCtrl'
+        controller: 'PreferencesCtrl'
       }
     }
   })

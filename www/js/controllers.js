@@ -98,6 +98,251 @@ angular.module('deepBlue.controllers', [])
 
 })
 
+.controller('PreferencesCtrl', function($scope, $state, $rootScope, UserGridService, RecommendationService) {
+  $scope.skipPreferences = function () {
+    $state.go('app.feed');
+  };
+
+  $scope.sweetOrSavorySlider = {
+    value: 2,
+    options: {
+      showTicksValues: false,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      getPointerColor: function(value) {
+        return '#009688';
+      },
+      stepsArray: [
+        {value: 1},
+        {value: 2},
+        {value: 3}
+      ]
+    }
+  };
+
+  $scope.chewyOrCrunchySlider = {
+    value: 2,
+    options: {
+      showTicksValues: false,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      getPointerColor: function(value) {
+        return '#009688';
+      },
+      stepsArray: [
+        {value: 1},
+        {value: 2},
+        {value: 3}
+      ]
+    }
+  };
+
+  $scope.mildOrSpicySlider = {
+    value: 2,
+    options: {
+      showTicksValues: false,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      getPointerColor: function(value) {
+        return '#009688';
+      },
+      stepsArray: [
+        {value: 1},
+        {value: 2},
+        {value: 3}
+      ]
+    }
+  };
+
+  $scope.lowCarbSlider = {
+    value: 2,
+    options: {
+      showTicksValues: false,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      getPointerColor: function(value) {
+        return '#009688';
+      },
+      stepsArray: [
+        {value: 1},
+        {value: 2},
+        {value: 3}
+      ]
+    }
+  };
+
+  $scope.vegSlider = {
+    value: 2,
+    options: {
+      showTicksValues: false,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      getPointerColor: function(value) {
+        return '#009688';
+      },
+      stepsArray: [
+        {value: 1},
+        {value: 2},
+        {value: 3}
+      ]
+    }
+  };
+
+  $scope.organicSlider = {
+    value: 2,
+    options: {
+      showTicksValues: false,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      getPointerColor: function(value) {
+        return '#009688';
+      },
+      stepsArray: [
+        {value: 1},
+        {value: 2},
+        {value: 3}
+      ]
+    }
+  };
+
+  function generatePreferencesList (currentPreferencesList) {
+    var newList = [];
+
+    switch ($scope.sweetOrSavorySlider.value) {
+      case 1:
+        if (_.indexOf(currentPreferencesList, 0) === -1) {
+          newList.push(0);
+        }
+        break;
+      case 2:
+        if (_.indexOf(currentPreferencesList, 0) === -1) {
+          newList.push(0);
+        }
+        if (_.indexOf(currentPreferencesList, 10) === -1) {
+          newList.push(10);
+        }
+        break;
+      case 3:
+        if (_.indexOf(currentPreferencesList, 10) === -1) {
+          newList.push(10);
+        }
+        break;
+    }
+
+    switch ($scope.chewyOrCrunchySlider.value) {
+      case 1:
+        if (_.indexOf(currentPreferencesList, 2) === -1) {
+          newList.push(2);
+        }
+        break;
+      case 2:
+        if (_.indexOf(currentPreferencesList, 2) === -1) {
+          newList.push(2);
+        }
+        if (_.indexOf(currentPreferencesList, 3) === -1) {
+          newList.push(3);
+        }
+        break;
+      case 3:
+        if (_.indexOf(currentPreferencesList, 3) === -1) {
+          newList.push(3);
+        }
+        break;
+    }
+
+    switch ($scope.mildOrSpicySlider.value) {
+      case 1:
+        if (_.indexOf(currentPreferencesList, 8) === -1) {
+          newList.push(8);
+        }
+        break;
+      case 2:
+        if (_.indexOf(currentPreferencesList, 8) === -1) {
+          newList.push(8);
+        }
+        if (_.indexOf(currentPreferencesList, 1) === -1) {
+          newList.push(1);
+        }
+        break;
+      case 3:
+        if (_.indexOf(currentPreferencesList, 1) === -1) {
+          newList.push(1);
+        }
+        break;
+    }
+
+    if ($scope.lowCarbSlider.value ===3) {
+      if (_.indexOf(currentPreferencesList, 6) === -1) {
+        newList.push(6);
+      }
+    }
+
+    if ($scope.vegSlider.value !==3) {
+      if (_.indexOf(currentPreferencesList, 4) === -1) {
+        newList.push(4);
+      }
+    }
+
+    if ($scope.organicSlider.value !==3) {
+      if (_.indexOf(currentPreferencesList, 5) === -1) {
+        newList.push(5);
+      }
+    }
+
+    return newList;
+  };
+
+
+  $scope.savePref =  function () {
+    console.log("Setting preferences...")
+    UserGridService.getClient().getLoggedInUser(function (err, data, user) {
+      if (err) {
+        // Error - could not get logged in user
+      } else {
+        // Success - got logged in user
+
+        // You can then get info from the user entity object:
+        var uuid = user.get('uuid');
+
+        var snackUsers = UserGridService.generateNewCollection("snackusers");
+
+        snackUsers.qs = {ql: "select * where userGridId='" + uuid + "'"};
+        snackUsers.fetch(
+          function (err, data) {
+            if (err) {
+              console.log("Couldn't get the list of snacks.");
+            } else {
+              var userNeedsToBeUpdated = _.first(data.entities);
+              var newPreferencesList = generatePreferencesList(userNeedsToBeUpdated.preferences);
+              _.forEach(userNeedsToBeUpdated.preferences, function(item){
+                newPreferencesList.push(item);
+              });
+
+              var properties = {
+                client: UserGridService.getClient(),
+                data: {
+                  type: 'snackusers',
+                  uuid: uuid,
+                  preferences:newPreferencesList
+                }
+              };
+
+              var entity = new Usergrid.Entity(properties);
+              entity.save(function (error, result) {
+
+                if (error) {
+                  //error
+                } else {
+                  //success
+                  RecommendationService.generateRecommendationList();
+                }
+              });
+            }
+          });
+      }
+    });
+  };
+})
 
 .controller('LoginCtrl', function ($scope, $state, $rootScope, UserGridService) {
 
