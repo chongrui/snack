@@ -1,20 +1,37 @@
-/*
-
-  DeepBlue Starter Kit - version 1.1
-  Copyright (c) 2015 INMAGIK SRL - www.inmagik.com
-  All rights reserved
-
-  written by Mauro Bianchi
-  bianchimro@gmail.com
-
-  file: controllers.js
-  description: this file contains all controllers of the DeepBlue app.
-
-*/
-
-
 //controllers are packed into a module
 angular.module('deepBlue.controllers', [])
+
+.controller('DashCtrl', function($scope, UserGridService) {
+
+  var snacks = UserGridService.generateNewCollection("snacks");
+
+  // Create a new entity and add it to the collection
+  var options = {
+    name:'extra-dog67',
+    fur:'shedding'
+  }
+
+  // Just pass the options to the addEntity method
+  // to the collection and it is saved automatically
+  snacks.addEntity(options, function(err, snack, data) {
+    if (err) {
+      console.log("Fuck, usergrid stops working again?")
+    } else {
+      snacks.fetch(
+        function(err, data) {
+          if (err) {
+            alert("Couldn't get the list of snacks.");
+          } else {
+            while(snacks.hasNextEntity()) {
+              var snack = snacks.getNextEntity();
+              console.log(snack.get("name")); // Output the title of the book
+            }
+          }
+        }
+      );
+    }
+  });
+})
 
 //top view controller
 .controller('AppCtrl', function($scope, $rootScope, $state) {
@@ -321,3 +338,4 @@ angular.module('deepBlue.controllers', [])
     return user_preferences;
   }
 });
+
