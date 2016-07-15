@@ -259,11 +259,13 @@ angular.module('deepBlue.controllers', [])
   //TODO
   //var userUuid = '6e75d074-49bd-11e6-a968-0242ac120004';
   //groupsHaveCurrentUser.qs = {ql: 'select * where userGridId=\'' + userUuid + '\''};
+
+  var totalRequestedSnacksList = [];
+  var totalPurchasedSnacksList = [];
   groupsHaveCurrentUser.fetch(function(err, data) {
     _.each(data.entities, function (group) {
       console.log(data.entities);
-      var totalRequestedSnacksList = [];
-      var totalPurchasedSnacksList = [];
+      totalPurchasedSnacksList.push()
 
     });
   })
