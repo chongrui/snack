@@ -28,9 +28,13 @@
       <div>
         <ion-list>
           <ion-item class="item-remove-animate item-avatar item-icon-right item-borderless" ng-click="showPopup()" type="item-text-wrap">
-            <img src="../img/add-icon.png">
-            <p align="left" style="font-size: 10px">Add another snacker to this group!</p>
+
+            <i class="icon ion-android-add-circle" style="position: absolute; left: 0.6em;"></i>
+            <p align="left" style="font-size: 10px; margin-top: 0.2em;">Add another snacker to this group!</p>
+
+
           </ion-item>
+
           <ion-item class="item-remove-animate item-avatar item-icon-right item-borderless" type="item-text-wrap" ng-repeat="x in users">
             <img src={{x.image}}>
             <p align="left" style="">{{x.name}}</p>

@@ -60,16 +60,10 @@
       <div class="item-image tile-top" style="border:0; ">
 
 
+
         <ion-slide-box delegate-handle="$ionicSlideBoxDelegate" show-pager="false" style="width: 101%;" >
           <ion-slide ng-repeat="feed in dataModel.recommendedList" ng-init="updateSlides()">
             <div class="box blue"  style="width: inherit"><img src="{{feed.image}}" ></div>
-
-            <a class="tab-item" style="position:absolute;top:57%;right:18%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
-              <i class="icon ion-thumbsup"></i>
-            </a>
-            <a class="tab-item" style="position:absolute;top:58%;right:5%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
-              <i class="icon ion-thumbsdown"></i>
-            </a>
 
             <div class="item item-text-wrap"  style="width: inherit" >
               <h4 style="font-size: x-small; margin-right: 25%">{{feed.name}}</h4>
@@ -80,15 +74,18 @@
                 {{feed.description}}
               </p>
               <button class="button button-small button-block button-assertive" style="position:relative; width: 50%; margin-left: auto; margin-right: auto; z-index: 10000; bottom: -42px" ng-click="dataModel.requestSnackFeed()">REQUEST!</button>
+
+              <div>
+                <a class="tab-item" style="position:absolute;top:6%;right:16%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
+                  <i class="icon ion-thumbsup"></i>
+                </a>
+                <a class="tab-item" style="position:absolute;top:7%;right:6%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
+                  <i class="icon ion-thumbsdown"></i>
+                </a>
+              </div>
             </div>
 
-            <div>
-            <a style="position:absolute;top:20%;left:10%" >
-              <i class="icon ion-ios-arrow-back" style="color: white; zoom: 200%"></i>
-            </a>
-            <a style="position:absolute;top:20%;right:10%">
-              <i class="icon ion-ios-arrow-forward" style="color: white; zoom: 200%"></i>
-            </a>
+
 
           </ion-slide>
         </ion-slide-box>
