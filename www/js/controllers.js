@@ -40,15 +40,11 @@ angular.module('deepBlue.controllers', [])
               //don't allow the user to close unless he enters model...
               e.preventDefault();
             } else {
-              return $scope.data.model;
+              return $scope.users.push({image: "../img/LogoCropped.png",name:$scope.data.model});
             }
           }
         }
       ]
-    });
-
-    myPopup.then(function(res) {
-      console.log('Tapped!', res);
     });
   };
   $scope.groupName = "GROUP1";
