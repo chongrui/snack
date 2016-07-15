@@ -129,10 +129,11 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
     }
   })
 
-  .state('tab.shopping-list', {
+  .state('app.shopping-list', {
     url: '/shopping-list',
+    data : {auth : true},
     views: {
-      'tab-shopping-list': {
+      'menuContent': {
         templateUrl: 'templates/shopping-list.html',
         controller: 'ShoppingListCtrl'
       }

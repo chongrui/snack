@@ -248,6 +248,8 @@ angular.module('deepBlue.controllers', [])
 
 .controller('ShoppingListCtrl', function($scope)  {
 
+  $scope.groupName = "GROUP1";
+
   var groupName = "temp placeholder";
 
   var user_preferences = getUserData(groupName);
@@ -268,6 +270,24 @@ angular.module('deepBlue.controllers', [])
   });
 
   $scope.shopping_items = requestedSnacks;
+  $scope.shopping_items = [{
+    image: "../img/LogoCropped.png",
+    name: "hello",
+    score: 3,
+    purchased: false
+  },
+  {
+    image: "../img/LogoCropped.png",
+    name: "hello1",
+    score: 2,
+    purchased: true
+  },
+  {
+    image: "../img/LogoCropped.png",
+    name: "hello2",
+    score: 1,
+    purchased: false
+  }]
 
   //Functions to be moved to services soon
   function generateScore(users, snack_list)  {

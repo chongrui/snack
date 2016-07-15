@@ -1,11 +1,42 @@
-<ion-view view-title="Shopping List">
-  <ion-content class="padding">
-    <h2>Welcome to Ionic</h2>
-    <input type="checkbox" ng-model="searchTestString"> I have a bike<br>
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="x in shopping_items">
-        <h2>{{x}}</h2>
-      </ion-item>
-    </ion-list>
+<!--
+  #TIP: in this case we hide the navbar provided by navigation system.
+-->
+<ion-view view-title="Feed" hide-back-button="false">
+
+  <!-- in our custom header bar we give a link to start screen -->
+  <ion-header-bar style="background-color: #009688">
+    <button ui-sref="app.start"><i class="white-color ion-arrow-left-c"></i></button>
+    <h1 class="title" style="color: white; font-weight: bold">Shopping List</h1>
+  </ion-header-bar>
+
+  <ion-content class="has-header padding full-height text-center" style="background-color: #D8D8D8; border-color: #009688">
+
   </ion-content>
+
+  <ion-content class="text-center" style="background-color: #009688">
+    <div class="text-center" style="margin: 8% 20%">
+      <p style="color:white;">
+        Below are your shopping lists for each group you belong to.
+        Keep those snack-o-holics fed!
+      </p>
+    </div>
+  </ion-content>
+
+  <ion-content class="text-center" style="margin: 30% auto auto auto; z-index: 10000; background-color: white; width: 80%">
+    <div class="text-center" style="margin: 12% 7%">
+      <h4 class="text-center"><b>Shopping list for {{groupName}}</b></h4>
+      <div>
+        <ion-list>
+          <ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap" ng-repeat="x in shopping_items | orderBy:'-score'">
+            <img src={{x.image}}>
+            <p align="left" style="">{{x.name}}</p>
+            <input type="checkbox" ng-if=x.purchased style="float:right;" checked>
+            <input type="checkbox" ng-if=!x.purchased style="float:right;">
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+
+  </ion-content>
+
 </ion-view>
