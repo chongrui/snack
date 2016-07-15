@@ -1,4 +1,4 @@
-<ion-view view-title="Snack git Feed" hide-back-button="false">
+<ion-view view-title="Snack Feed" hide-back-button="false">
   <ion-content style="background-color: #009688">
     <link rel="stylesheet" type="text/css" href="../css/style.css">
 
@@ -53,9 +53,9 @@
 
 
         <div>
-          <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="false">
+          <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="false" does-continue="true" auto-play="true">
             <ion-slide ng-repeat="feed in dataModel.recommendedList">
-              <div class="box blue"><img src="{{feed.image}}"></div>
+              <div class="box blue"><img src="{{feed.image}}" height="175"></div>
 
               <a class="tab-item" style="position:absolute;top:5%;right:20%; zoom: 70%" on-tap="onTap()" >
                 <i class="icon ion-thumbsup"></i>
@@ -64,6 +64,11 @@
                 <i class="icon ion-thumbsdown"></i>
               </a>
 
+              <div class="item item-text-wrap">
+                <p style="font-size: x-small; height: 175px">
+                  {{feed.description}}
+                </p>
+              </div>
             </ion-slide>
           </ion-slide-box>
 
@@ -75,18 +80,12 @@
           </a>
         </div>
 
-        <div class="item item-text-wrap">
-          <p style="font-size: x-small">
-            {{feeds[0].description}}
-          </p>
-        </div>
+
       </div>
 
       <button class="button button-small button-block button-assertive" style="position:relative; width: 50%; margin-left: auto; margin-right: auto; z-index: 10000; top: -25px">REQUEST!</button>
 
     </div>
-
-  <img src="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTVDDDSgUAbIH4cpH3qByOSwkRYqja7xNkT2BeIdGRSGE46y1BF9D2zt1IoWxpwK9NS1wPiW4g8&amp;usqp=CAk">
 
   </ion-content>
 </ion-view>
