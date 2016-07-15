@@ -31,8 +31,8 @@
                 <ion-item class="item-avatar" type="item-text-wrap" ng-repeat="snack in dataModel.mySnackList">
                   <img src={{snack.image}}>
                   <p style="position: absolute; float:left; word-wrap: break-word; width: 9em">{{snack.name}}</p>
-                  <i id="thumpsDown"+{{$index}} class="icon ion-thumbsdown" style="zoom: 100%; margin-left: 5%; float:right;" ng-style="{'color': dataModel.likeTable[{{$index}}] === 1 ? '#00796B' : ''}" ng-click="dataModel.dislike($event, snack, 'thumbsUp'+{{$index}}, 'thumbsDown'+{{$index}})" ></i>
-                  <i id="thumpsUp"+{{$index}} class="icon ion-thumbsup" style="zoom: 100%; float:right;" ng-style="{'color': dataModel.likeTable[{{$index}}] === 0 ? 'hotpink' : ''}" ng-click="dataModel.like($event, snack, 'thumbsUp'+{{$index}}, 'thumbsDown'+{{$index}})" ></i>
+                  <i id="thumpsDown{{$index}}" class="icon ion-thumbsdown" style="zoom: 100%; margin-left: 5%; float:right;" ng-style="{'color': dataModel.likeTable[{{$index}}] === 1 ? '#00796B' : ''}" ng-click="dataModel.dislike(snack, 'thumbsUp'+{{$index}}, 'thumbsDown'+{{$index}}, $index)" ></i>
+                  <i id="thumpsUp{{$index}}" class="icon ion-thumbsup" style="zoom: 100%; float:right;" ng-style="{'color': dataModel.likeTable[{{$index}}] === 0 ? 'hotpink' : ''}" ng-click="dataModel.like(snack, 'thumbsUp'+{{$index}}, 'thumbsDown'+{{$index}}, $index)" ></i>
 
                   <span style="zoom: 50%;bottom: 6mm;position:absolute;right:30mm;">Requested</span>
                   <label class="toggle" style="zoom: 50%;bottom: 6mm;position:absolute;right:12mm;" ng-click="dataModel.requestSnackFeed($index)">

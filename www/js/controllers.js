@@ -546,12 +546,14 @@ angular.module('deepBlue.controllers', [])
                           snackStatusList: mySnacksList,
                           mySnackList: feedList,
                           likeTable: likeTable,
-                          like: function($event, snack, likeId, dislikeId) {
+                          like: function(snack, likeId, dislikeId, index) {
+                            likeTable[index] = 0;
                             $('#'+dislikeId).css('color', 'gray');
                             $('#'+likeId).css('color', 'hotpink');
                             FeedbackService.updateLike(snack.uuid);
                           },
-                          dislike: function($event, snack, likeId, dislikeId) {
+                          dislike: function(snack, likeId, dislikeId, index) {
+                            likeTable[index] = 1;
                             $('#'+likeId).css('color', 'gray');
                             $('#'+dislikeId).css('color', '#00796B');
                             FeedbackService.updateDislike(snack.uuid);
