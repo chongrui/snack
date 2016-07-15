@@ -34,21 +34,16 @@
             </p>
           </div>
 
-
-          <div>
-            <a class="tab-item" style="position:absolute;top:10%;right:16%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
-              <i class="icon ion-thumbsup"></i>
-            </a>
-            <a class="tab-item" style="position:absolute;top:12%;right:6%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
-              <i class="icon ion-thumbsdown"></i>
-            </a>
-          </div>
-
+        <a id="featuredLike" class="tab-item" style="position:absolute;top:51%;right:20%; zoom: 60%; z-index: 100005" ng-click="dataModel.like($event, dataModel.snackOfTheWeek, featuredLike, featuredDislike)">
+          <i class="icon ion-thumbsup"></i>
+        </a>
+        <a id="featuredDislike" class="tab-item" style="position:absolute;top:52%;right:5%; zoom: 60%; z-index: 100005" ng-click="dataModel.dislike($event, dataModel.snackOfTheWeek, featuredLike, featuredDislike)">
+          <i class="icon ion-thumbsdown"></i>
+        </a>
+      </div>
 
         </div>
       <button class="button button-small button-block button-assertive" style="position:relative; width: 50%; margin-left: auto; margin-right: auto; z-index: 10000; top: -25px" ng-click="dataModel.requestSnack()">REQUEST!</button>
-
-    </div>
 
     <div>
       <div class="text-center" style="margin-top: 10%">
@@ -64,6 +59,13 @@
         <ion-slide-box delegate-handle="$ionicSlideBoxDelegate" show-pager="false" style="width: 101%;" >
           <ion-slide ng-repeat="feed in dataModel.recommendedList" ng-init="updateSlides()">
             <div class="box blue"  style="width: inherit"><img src="{{feed.image}}" ></div>
+
+            <a id="thumbsUp{{$index}}" class="tab-item" style="position:absolute;top:45%;right:20%; zoom: 60%; z-index: 100005" ng-click="dataModel.like($event, feed, 'thumbsUp'+{{$index}}, 'thumbsDown'+{{$index}})" >
+              <i class="icon ion-thumbsup"></i>
+            </a>
+            <a id="thumbsDown{{$index}}" class="tab-item" style="position:absolute;top:46%;right:5%; zoom: 60%; z-index: 100005" ng-click="dataModel.dislike($event, feed, 'thumbsUp'+{{$index}}, 'thumbsDown'+{{$index}})" >
+              <i class="icon ion-thumbsdown"></i>
+            </a>
 
             <div class="item item-text-wrap"  style="width: inherit" >
               <h4 style="font-size: x-small; margin-right: 25%">{{feed.name}}</h4>
@@ -89,15 +91,8 @@
 
           </ion-slide>
         </ion-slide-box>
-
-
-
-
       </div>
-
-
-
-    </div class="tile-top">
+    </div>
 
   </ion-content>
 </ion-view>

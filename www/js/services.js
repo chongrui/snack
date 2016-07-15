@@ -361,7 +361,7 @@ angular.module('deepBlue.services', [])
                   } else {
                   var snackEntry = _.first(data.entities);
 
-                  var snack = _.find(userSnacks.snacks, function(snack) { return snack.uuid === snackId; });
+                  var snack = _.find(userSnacks.snacks, function(snack) { return snack.snackId === snackId; });
                   if(snack && snack.like === 1) {
                     return;
                   }
@@ -487,7 +487,7 @@ angular.module('deepBlue.services', [])
                     } else {
                       var snackEntry = _.first(data.entities);
 
-                      var snack = _.find(userSnacks.snacks, function(snack) { return snack.uuid === snackId; });
+                      var snack = _.find(userSnacks.snacks, function(snack) { return snack.snackId === snackId; });
                       if(snack && snack.dislike === 1) {
                         return;
                       }
