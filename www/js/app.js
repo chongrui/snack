@@ -140,18 +140,6 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
     }
   })
 
-  .state('app.shop', {
-    url: '/shop',
-    data : { auth : true },
-    cache : false,
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/feed.html',
-        controller : 'FeedsCtrl'
-      }
-    }
-  })
-
   .state('app.cart', {
     url: '/cart',
     data : { auth : true },

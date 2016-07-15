@@ -53,25 +53,42 @@ angular.module('deepBlue.controllers', [])
 })
 
 
-.controller('LoginCtrl', function ($scope, $state, $rootScope) {
+.controller('LoginCtrl', function ($scope, $state, $rootScope, UserGridService) {
 
   // #SIMPLIFIED-IMPLEMENTATION:
   // This login function is just an example.
   // A real one should call a service that checks the auth against some
   // web service
 
-  $scope.login = function(){
-    //in this case we just set the user in $rootScope
-    $rootScope.user = {
-      email : "mary@ubiqtspaces.com",
-      name : "Mary Ubiquitous",
-      address : "Rue de Galvignac",
-      city : "RonnieLand",
-      zip  : "00007",
-      avatar : 'sampledata/images/avatar.jpg'
+    $scope.user = {
+      username: '',
+      password: ''
     };
-    //finally, we route our app to the 'app.shop' view
-    $state.go('app.feed');
+
+  $scope.login = function(){
+    UserGridService.getClient().login($scope.user.username, $scope.user.password, function (err) {
+      if (err) {
+        // Error - could not log user in
+      } else {
+        var token = UserGridService.getClient().token;
+        UserGridService.getClient().getLoggedInUser(function(err, data, user) {
+          if (err) {
+            // Error - could not get logged in user
+          } else {
+            // Success - got logged in user
+
+            // You can then get info from the user entity object:
+            var username = user.get('username');
+            $rootScope.user = {
+              email: user.get('email'),
+              name: user.get('name'),
+              username: user.get('username')
+            };
+            $state.go('app.feed');
+          }
+        });
+      }
+    });
   };
 
 })
@@ -79,61 +96,31 @@ angular.module('deepBlue.controllers', [])
 
 // Feeds controller.
 .controller('FeedsCtrl', function($scope, BackendService, UserGridService) {
-
-  // #SIMPLIFIED-IMPLEMENTATION:
-  // In this example feeds are loaded from a json file.
-  // (using "getFeeds" method in BackendService, see services.js)
-  // In your application you can use the same approach or load
-  // feeds from a web service.
-
-
-  //EXAMPLE - ADD AND FETCH
-
-  var snacks = UserGridService.generateNewCollection("snacks");
-  //
-  //// Create a new entity and add it to the collection
-  //var options = {
-  //  name:'extra-dog113',
-  //  fur:'shedding'
-  //}
-  //
-  //// Just pass the options to the addEntity method
-  //// to the collection and it is saved automatically
-  //snacks.addEntity(options, function(err, snack, data) {
-  //  if (err) {
-  //    console.log("fuck:", err);
-  //  } else {
-  //    snacks.qs={ql:"select * where name='chongrui'"};
-  //    snacks.fetch(
-  //      function(err, data) {
-  //        if (err) {
-  //          console.log("Couldn't get the list of snacks.");
-  //        } else {
-  //          while(snacks.hasNextEntity()) {
-  //            var snack = snacks.getNextEntity();
-  //            console.log(snack.get("name")); // Output the title of the book
-  //          }
-  //        }
-  //      }
-  //    );
-  //  }
-  //});
-
-  //EXAMPLE - CONDITIONAL FETCH
-
-  snacks.qs={ql:"select * where name='chongrui'"};
-  snacks.fetch(
-    function(err, data) {
-      if (err) {
-        console.log("Couldn't get the list of snacks.");
+    UserGridService.getClient().getLoggedInUser(function(err, data, user) {
+      if(err) {
+        // Error - could not get logged in user
       } else {
-        while(snacks.hasNextEntity()) {
-          var snack = snacks.getNextEntity();
-          console.log(snack.get("name")); // Output the title of the book
-        }
+        // Success - got logged in user
+
+        // You can then get info from the user entity object:
+        var uuid = user.get('uuid');
+
+
+        var snacks = UserGridService.generateNewCollection("snackusers");
+
+        snacks.qs={ql:"select * where uuid='" + uuid + "'"};
+        snacks.fetch(
+          function(err, data) {
+            if (err) {
+              console.log("Couldn't get the list of snacks.");
+            } else {
+              var recommendedList = data;
+            }
+          }
+        );
       }
-    }
-  );
+    });
+
 
 
   $scope.doRefresh = function(){
@@ -148,60 +135,6 @@ angular.module('deepBlue.controllers', [])
   };
 
   // Triggering the first refresh
-  $scope.doRefresh();
-
-})
-
-// Shop controller.
-.controller('ShopCtrl', function($scope, $ionicActionSheet, BackendService, CartService) {
-
-  // In this example feeds are loaded from a json file.
-  // (using "getProducts" method in BackendService, see services.js)
-  // In your application you can use the same approach or load
-  // products from a web service.
-
-  //using the CartService to load cart from localStorage
-  $scope.cart = CartService.loadCart();
-
-  $scope.doRefresh = function(){
-      BackendService.getProducts()
-      .success(function(newItems) {
-        $scope.products = newItems;
-      })
-      .finally(function() {
-        // Stop the ion-refresher from spinning (not needed in this view)
-        $scope.$broadcast('scroll.refreshComplete');
-      });
-  };
-
-  // private method to add a product to cart
-  var addProductToCart = function(product){
-    $scope.cart.products.push(product);
-    CartService.saveCart($scope.cart);
-  };
-
-  // method to add a product to cart via $ionicActionSheet
-  $scope.addProduct = function(product){
-    $ionicActionSheet.show({
-       buttons: [
-         { text: '<b>Add to cart</b>' }
-       ],
-       titleText: 'Buy ' + product.title,
-       cancelText: 'Cancel',
-       cancel: function() {
-          // add cancel code if needed ..
-       },
-       buttonClicked: function(index) {
-         if(index == 0){
-           addProductToCart(product);
-           return true;
-         }
-         return true;
-       }
-     });
-  };
-
-  //trigger initial refresh of products
   $scope.doRefresh();
 
 })
