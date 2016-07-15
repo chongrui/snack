@@ -1,3 +1,6 @@
+
+// CHECK FEED CONTROLER FOR EXAMPLES!!
+
 //controllers are packed into a module
 angular.module('deepBlue.controllers', [])
 
@@ -84,34 +87,54 @@ angular.module('deepBlue.controllers', [])
   // feeds from a web service.
 
 
+  //EXAMPLE - ADD AND FETCH
+
   var snacks = UserGridService.generateNewCollection("snacks");
+  //
+  //// Create a new entity and add it to the collection
+  //var options = {
+  //  name:'extra-dog113',
+  //  fur:'shedding'
+  //}
+  //
+  //// Just pass the options to the addEntity method
+  //// to the collection and it is saved automatically
+  //snacks.addEntity(options, function(err, snack, data) {
+  //  if (err) {
+  //    console.log("fuck:", err);
+  //  } else {
+  //    snacks.qs={ql:"select * where name='chongrui'"};
+  //    snacks.fetch(
+  //      function(err, data) {
+  //        if (err) {
+  //          console.log("Couldn't get the list of snacks.");
+  //        } else {
+  //          while(snacks.hasNextEntity()) {
+  //            var snack = snacks.getNextEntity();
+  //            console.log(snack.get("name")); // Output the title of the book
+  //          }
+  //        }
+  //      }
+  //    );
+  //  }
+  //});
 
-  // Create a new entity and add it to the collection
-  var options = {
-    name:'extra-dog6890809',
-    fur:'shedding'
-  }
+  //EXAMPLE - CONDITIONAL FETCH
 
-  // Just pass the options to the addEntity method
-  // to the collection and it is saved automatically
-  snacks.addEntity(options, function(err, snack, data) {
-    if (err) {
-      console.log("Fuck, usergrid stops working again?")
-    } else {
-      snacks.fetch(
-        function(err, data) {
-          if (err) {
-            alert("Couldn't get the list of snacks.");
-          } else {
-            while(snacks.hasNextEntity()) {
-              var snack = snacks.getNextEntity();
-              console.log(snack.get("name")); // Output the title of the book
-            }
-          }
+  snacks.qs={ql:"select * where name='chongrui'"};
+  snacks.fetch(
+    function(err, data) {
+      if (err) {
+        console.log("Couldn't get the list of snacks.");
+      } else {
+        while(snacks.hasNextEntity()) {
+          var snack = snacks.getNextEntity();
+          console.log(snack.get("name")); // Output the title of the book
         }
-      );
+      }
     }
-  });
+  );
+
 
   $scope.doRefresh = function(){
       BackendService.getFeeds()
