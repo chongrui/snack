@@ -79,7 +79,7 @@ angular.module('deepBlue.services', [])
 
   .factory('UserGridService', function() {
     var client = new Usergrid.Client({
-      URI:'http://localhost:8080',
+      URI:'http://10.1.176.240:8080',
       orgName:'org',
       appName:'sandbox',
       logging: true, // Optional - turn on logging, off by default
