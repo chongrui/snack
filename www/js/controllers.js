@@ -141,7 +141,7 @@ angular.module('deepBlue.controllers', [])
 
 
 // Feeds controller.
-.controller('FeedsCtrl', function($scope, BackendService, UserGridService, $ionicSlideBoxDelegate) {
+.controller('FeedsCtrl', function($scope, BackendService, UserGridService, $ionicSlideBoxDelegate, FeedbackService) {
     UserGridService.getClient().getLoggedInUser(function(err, data, user) {
       if(err) {
         // Error - could not get logged in user
@@ -177,14 +177,22 @@ angular.module('deepBlue.controllers', [])
                     } else {
                       var recommendedList = _.orderBy(_.filter(_.first(data.entities).snacks, function(item) { return item.dislike === 0 && item.like === 0 && item.requested === 0; }), ['score'], ['desc']);
                       _.each(recommendedList, function(snackStatus) {
-                        var matchingSnack = _.find(allSnacks, function(snack) { return snack.uuid === snackStatus.snackId})
+                        var matchingSnack = _.find(allSnacks, function(snack) { return snack.uuid === snackStatus.snackId});
                         if(matchingSnack) {
                           feedList.push(matchingSnack);
                         }
                       });
-
+                      feedList = feedList.slice(0, 30);
+                      $scope.activeSlide = 0;
                       $scope.dataModel = {
-                        recommendedList: feedList.slice(0, 10)
+                        snackOfTheWeek: allSnacks[104],
+                        requestSnack: function() {
+                          FeedbackService.updateRequest(allSnacks[49].uuid, 0)
+                        },
+                        requestSnackFeed: function() {
+                          FeedbackService.updateRequest(feedList[$ionicSlideBoxDelegate.currentIndex()].uuid, 0);
+                        },
+                        recommendedList: feedList
                       }
                     }
                   });
