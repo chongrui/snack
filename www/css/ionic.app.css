@@ -4262,7 +4262,10 @@ a.subdued {
 .bar-header {
   top: 0;
   border-top-width: 0;
-  border-bottom-width: 1px; }
+  border-bottom-width: 1px;
+  background-color: #00796B;
+  color: white;
+}
   .bar-header.has-tabs-top {
     border-bottom-width: 0px;
     background-image: none; }
@@ -4305,7 +4308,7 @@ a.subdued {
   display: none; }
 
 .nav-bar-tabs-top .bar {
-  background-image: none; }
+  background-image: none;  }
 
 /**
  * Tabs
@@ -5853,11 +5856,12 @@ button.item.item-complex {
   z-index: 2;
   padding: 16px 49px 16px 16px;
   border: none;
-  background-color: #ffffff; }
+  font-weight: bold;
+  background-color: #00796B; }
 
 a.item-content {
   display: block;
-  color: inherit;
+  color: white;
   text-decoration: none; }
 
 .item-text-wrap .item,
@@ -8056,8 +8060,8 @@ progress {
         box-shadow: none;
         color: #fff; }
   .button.button-balanced {
-    border-color: #28a54c;
-    background-color: #33cd5f;
+    border-color: #00796B;
+    background-color: #00796B;
     color: #fff; }
     .button.button-balanced:hover {
       color: #fff;
@@ -9087,8 +9091,8 @@ a.button {
     All rights reserved
 
     written by Mauro Bianchi
-    bianchimro@gmail.com  
-  
+    bianchimro@gmail.com
+
     file: mixes.scss
     description: various mixins for gradient backgrounds
 */
@@ -9099,8 +9103,8 @@ a.button {
     All rights reserved
 
     written by Mauro Bianchi
-    bianchimro@gmail.com  
-  
+    bianchimro@gmail.com
+
     file: scaffolding.scss
     description:Generic helpers used in templates
 
@@ -9183,7 +9187,7 @@ a.button {
     All rights reserved
 
     written by Mauro Bianchi
-    bianchimro@gmail.com  
+    bianchimro@gmail.com
 
     file: themed.scss
     description: theme classes
@@ -9221,7 +9225,8 @@ a.button {
     .deepblue-theme .menu .item-menu-avatar .item-content {
       padding: 5px; }
     .deepblue-theme .menu .menu-positive .item-content {
-      background: #387ef5 !important; }
+      background: #387ef5 !important;
+    }
     .deepblue-theme .menu .item:first-child,
     .deepblue-theme .menu .item-complex:first-child .item-content:first-child {
       border-top: none; }

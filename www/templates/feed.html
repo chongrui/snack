@@ -1,5 +1,5 @@
 <ion-view view-title="Feed" hide-back-button="false">
-  <ion-content>
+  <ion-content style="background-color: #009688">
     <!-- here we use a ion-refresher -->
     <!--
       #SIMPLIFIED-IMPLEMENTATION:
@@ -30,16 +30,13 @@
         Be aware that in that case your elements will have to be all the same height or you will have to provide a method to calculate each item height (and/or weight).
         see more here: http://ionicframework.com/docs/api/directive/collectionRepeat/
     -->
-    <div ng-repeat="feed in feeds">
-      
-      <div class="item item-avatar item-button-right">
-        <img src="sampledata/images/avatar.jpg">
-        <h2>{{feed.title}}</h2>
-        <p>{{feed.date}}</p>
+    <div>
+      <div class="text-center" style="margin-top: 10%">
+        <p style="color: white; ">Snack-o-the-week!</p>
       </div>
 
       <div class="item item-image">
-        <img ng-src="{{feed.image}}">
+        <img ng-src="{{feeds[0].image}}">
       </div>
 
       <div class="item item-text-wrap">
@@ -47,6 +44,7 @@
           {{feed.description}}
         </p>
       </div>
+
       <div class="item">
         <p>
           <a href="#" class="subdued">1 Like</a>
@@ -61,11 +59,12 @@
           Like
         </a>
         <a class="tab-item" href="#">
-          <i class="icon ion-chatbox"></i>
+          <i class="icon"></i>
           Comment
         </a>
       </div>
     </div>
+
   
   </ion-content>
 </ion-view>

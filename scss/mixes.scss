@@ -61,10 +61,10 @@
 }
 
 @mixin ui-gradient-deepblue-reverse() {
-  background: -webkit-linear-gradient(90deg, #0072ff 10%, #00c6ff 90%);
-  background: -moz-linear-gradient(90deg, #0072ff 10%, #00c6ff 90%);
-  background: -ms-linear-gradient(90deg, #0072ff 10%, #00c6ff 90%);
-  background: -o-linear-gradient(90deg, #0072ff 10%, #00c6ff 90%);
-  background: linear-gradient(90deg, #0072ff 10%, #00c6ff 90%); 
+  background: -webkit-linear-gradient(90deg, #009688 10%, #009688 90%);
+  background: -moz-linear-gradient(90deg, #009688 10%, #009688 90%);
+  background: -ms-linear-gradient(90deg, #009688 10%, #009688 90%);
+  background: -o-linear-gradient(90deg, #009688 10%, #009688 90%);
+  background: linear-gradient(90deg, #009688 10%, #009688 90%);
 }
 

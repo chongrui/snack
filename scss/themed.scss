@@ -32,19 +32,25 @@
     @include ui-gradient-deepblue-reverse();
     border-color: rgba($lighter, 0.80);
     border-right: solid white 1px;
+    background-color: #009688;
 
-    .item,
+    .item {
+      background-color: #009688;
+    },
     .item-complex .item-content {
       @include ui-gradient-deepblue-reverse();
-      color: $light;
+      color: #009688;
+      background-color: #009688;
       border-color: rgba($lighter, 0.80);
       * {
-        color: $lighter;
+        color: #009688;
+        background-color: #009688;
       }
     }
 
     .item-menu-avatar .item-content{
       padding:5px;
+      background-color: #009688;
     }
 
     .menu-positive .item-content, {
