@@ -93,8 +93,92 @@ angular.module('deepBlue.services', [])
     return {
       generateNewCollection: function (newCollectionType) {
         return generateNewCollectionHelper (newCollectionType);
+      },
+      getCurrentUser: function () {
+        return client.getCurrentUser();
+      },
+      getClient: function () {
+        return client;
       }
     };
+  })
+
+  .factory('RecommendationService', function (UserGridService) {
+    function calculateScore(snackPreferences, userPreferences) {
+      var score = 0;
+      if(snackPreferences) {
+        _.each(snackPreferences, function (snackPreference) {
+          if (_.indexOf(userPreferences, snackPreference) > -1) {
+            score++;
+          }
+        });
+      }
+      return score;
+    }
+
+    return {
+      generateRecommendationList: function () {
+
+        var recommendedList = [];
+        var snackUser;
+        //Get preference table from userId
+        var userUuid = '6e75d074-49bd-11e6-a968-0242ac120004';
+        snackUser = UserGridService.generateNewCollection('snackusers');
+
+        snackUser.qs = {ql: 'select * where userGridId=\'' + userUuid + '\''};
+        snackUser.fetch(function(err, data) {
+          var snackUser = _.first(data.entities);
+          var snacks = UserGridService.generateNewCollection('snacks')
+          snacks.qs = {limit:1000};
+          snacks.fetch(function (err, data) {
+
+            snacks = data.entities;
+            if (!snackUser || !snackUser.snacks) {
+              //Get all snacks with filters
+              _.each(snacks, function (snack) {
+                var score = calculateScore(snack.preferences, snackUser.preferences);
+                var snackItem = {
+                  like: 0,
+                  dislike: 0,
+                  requested: 0,
+                  snackId: snack.uuid,
+                  score: score
+                };
+
+                recommendedList.push(snackItem);
+              });
+            }
+            else {
+              _.each(snackUser.snacks, function (snackStatus) {
+                var snack = _.find(snacks, function (item) {
+                  return snackStatus.snackId === item.uuid
+                });
+                snackStatus.score = calculateScore(snack.preferences, snackUser.preferences);
+              });
+              recommendedList = snackUser.snacks;
+            }
+            var properties = {
+              client: UserGridService.getClient(),
+              data: {
+                type: 'snackusers',
+                uuid: snackUser.uuid,
+                snacks: recommendedList
+              }
+            };
+
+            var entity = new Usergrid.Entity(properties);
+            entity.save(function (error, result) {
+
+              if (error) {
+                //error
+              } else {
+                //success
+              }
+            });
+          });
+        });
+      }
+    }
   })
 
   .factory('Chats', function() {
