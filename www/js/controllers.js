@@ -254,23 +254,53 @@ angular.module('deepBlue.controllers', [])
 })
 
 .controller('ShoppingListCtrl', function($scope, UserGridService)  {
+  $scope.displaySnacksList = [];
+
+  var cloneSnack = function (list, currentSnack, checked) {
+    _.forEach(list, function(item) {
+      if (item.id == currentSnack.uuid) {
+        var tmpSnack = _.cloneDeep(currentSnack);
+        tmpSnack.checked = checked;
+        tmpSnack.numberOfRequested = item.numberOfRequested;
+        $scope.displaySnacksList.push(tmpSnack);
+      }
+    });
+  };
 
   var groupsHaveCurrentUser = UserGridService.generateNewCollection("snackgroups");
-  //TODO
+  //TODO should check all the groups' suppliers
   //var userUuid = '6e75d074-49bd-11e6-a968-0242ac120004';
   //groupsHaveCurrentUser.qs = {ql: 'select * where userGridId=\'' + userUuid + '\''};
 
   var totalRequestedSnacksList = [];
   var totalPurchasedSnacksList = [];
   groupsHaveCurrentUser.fetch(function(err, data) {
-    _.each(data.entities, function (group) {
+    _.forEach(data.entities, function (group) {
       console.log(data.entities);
-      totalPurchasedSnacksList.push()
-
+      if (group.hasOwnProperty('requestedSnacks')) {
+        _.forEach(group.requestedSnacks, function (rs) {
+          totalRequestedSnacksList.push(rs);
+        });
+      }
+      if (group.hasOwnProperty('purchasedSnacks')) {
+        _.forEach(group.purchasedSnacks, function (ps) {
+          totalPurchasedSnacksList.push(ps);
+        });
+      }
     });
-  })
 
+    var snacks = UserGridService.generateNewCollection("snacks");
+    snacks.qs = {limit:1000};
+    snacks.fetch(function (err,data) {
+      _.forEach(data.entities, function (s) {
+        cloneSnack(totalRequestedSnacksList, s, false);
+        cloneSnack(totalPurchasedSnacksList, s, true);
+      });
 
+      console.log($scope.displaySnacksList);
+    });
+
+  });
 
 
 
