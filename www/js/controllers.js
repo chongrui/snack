@@ -309,7 +309,7 @@ angular.module('deepBlue.controllers', [])
 
 })
 
-.controller('ShoppingListCtrl', function($scope, UserGridService)  {
+.controller('ShoppingListCtrl', function($scope, UserGridService, FeedbackService)  {
   $scope.displaySnacksList = [];
 
   var cloneSnack = function (list, currentSnack, checked) {
@@ -330,6 +330,7 @@ angular.module('deepBlue.controllers', [])
 
   var totalRequestedSnacksList = [];
   var totalPurchasedSnacksList = [];
+
   groupsHaveCurrentUser.fetch(function(err, data) {
     _.forEach(data.entities, function (group) {
       console.log(data.entities);
@@ -358,6 +359,10 @@ angular.module('deepBlue.controllers', [])
 
   });
 
+  $scope.removeFromRequestedList= function (x) {
+    console.log(x.uuid);
+    FeedbackService.updateRequest(x.uuid, 1);
+  }
 
 
   $scope.groupName = "GROUP1";
