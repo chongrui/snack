@@ -1,0 +1,11 @@
+<ion-view view-title="Shopping List">
+  <ion-content class="padding">
+    <h2>Welcome to Ionic</h2>
+    <input type="checkbox" ng-model="searchTestString"> I have a bike<br>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="x in shopping_items">
+        <h2>{{x}}</h2>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

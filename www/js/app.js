@@ -5,10 +5,10 @@
   All rights reserved
 
   written by Mauro Bianchi
-  bianchimro@gmail.com  
-  
+  bianchimro@gmail.com
+
   file: app.js
-  
+
 */
 
 angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'])
@@ -26,7 +26,7 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
       StatusBar.styleDefault();
     }
 
-    /* 
+    /*
       #SIMPLIFIED-IMPLEMENTATION:
       Example access control.
       A real app would probably call a service method to check if there
@@ -35,11 +35,11 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
       #IMPLEMENTATION-DETAIL: views that require authorizations have an
       "auth" key with value = "true".
     */
-    $rootScope.$on('$stateChangeStart', 
+    $rootScope.$on('$stateChangeStart',
       function(event, toState, toParams, fromState, fromParams){
         if(toState.data && toState.data.auth == true && !$rootScope.user.email){
           event.preventDefault();
-          $state.go('app.login');   
+          $state.go('app.login');
         }
     });
 
@@ -59,7 +59,7 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
     "auth" key with value = "true".
 
   */
-  
+
   $stateProvider
 
   .state('app', {
@@ -68,7 +68,7 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-  
+
   .state('app.start', {
     url: '/start',
     views: {
@@ -120,11 +120,21 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
 
   .state('app.feed', {
     url: '/feed',
-    data : { auth : true },
+    data: {auth: true},
     views: {
       'menuContent': {
         templateUrl: 'templates/feed.html',
-        controller : 'FeedsCtrl'
+        controller: 'FeedsCtrl'
+      }
+    }
+  })
+
+  .state('tab.shopping-list', {
+    url: '/shopping-list',
+    views: {
+      'tab-shopping-list': {
+        templateUrl: 'templates/shopping-list.html',
+        controller: 'ShoppingListCtrl'
       }
     }
   })
@@ -164,7 +174,7 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
       }
     }
   })
-  
+
   // If none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/start');
 

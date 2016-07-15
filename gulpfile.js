@@ -52,7 +52,8 @@ gulp.task('git-check', function(done) {
 gulp.task('connect', function () {
   connect.server({
     root: 'www',
-    livereload: true
+    livereload: true,
+    port: 9090
   });
 });
 gulp.task('html', function () {
