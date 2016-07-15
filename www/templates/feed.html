@@ -52,33 +52,36 @@
       <div class="item item-image tile" style="border: 0; ">
 
 
-        <div>
-          <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="false" does-continue="true" auto-play="true">
-            <ion-slide ng-repeat="feed in dataModel.recommendedList">
-              <div class="box blue"><img src="{{feed.image}}" height="175"></div>
+        <ion-slide-box delegate-handle="$ionicSlideBoxDelegate" show-pager="false" style="width: 265px" >
+          <ion-slide ng-repeat="feed in dataModel.recommendedList">
+            <div class="box blue"  style="width: 265px"><img src="{{feed.image}}" height="175" ></div>
 
-              <a class="tab-item" style="position:absolute;top:5%;right:20%; zoom: 70%" on-tap="onTap()" >
-                <i class="icon ion-thumbsup"></i>
-              </a>
-              <a class="tab-item" style="position:absolute;top:7%;right:5%; zoom: 70%" on-tap="onTap()" >
-                <i class="icon ion-thumbsdown"></i>
-              </a>
+            <a class="tab-item" style="position:absolute;top:5%;right:20%; zoom: 70%" on-tap="onTap()" >
+              <i class="icon ion-thumbsup"></i>
+            </a>
+            <a class="tab-item" style="position:absolute;top:7%;right:5%; zoom: 70%" on-tap="onTap()" >
+              <i class="icon ion-thumbsdown"></i>
+            </a>
 
-              <div class="item item-text-wrap">
-                <p style="font-size: x-small; height: 175px">
-                  {{feed.description}}
-                </p>
-              </div>
-            </ion-slide>
-          </ion-slide-box>
+            <div class="item item-text-wrap"  style="width: 265px" >
+              <p style="font-size: x-small; height: 175px">
+                {{feed.description}}
+              </p>
+            </div>
 
-          <a style="position:absolute;top:20%;left:10%" on-tap="onTap()" >
-            <i class="icon ion-ios-arrow-back" style="color: white; zoom: 200%"></i>
-          </a>
-          <a style="position:absolute;top:20%;right:10%" on-tap="onTap()" >
-            <i class="icon ion-ios-arrow-forward" style="color: white; zoom: 200%"></i>
-          </a>
-        </div>
+            <a style="position:absolute;top:20%;left:10%" >
+              <i class="icon ion-ios-arrow-back" style="color: white; zoom: 200%"></i>
+            </a>
+            <a style="position:absolute;top:20%;right:10%">
+              <i class="icon ion-ios-arrow-forward" style="color: white; zoom: 200%"></i>
+            </a>
+
+            <a ng-show="updateSlides()"></a>
+
+          </ion-slide>
+        </ion-slide-box>
+
+
 
 
       </div>

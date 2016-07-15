@@ -141,7 +141,7 @@ angular.module('deepBlue.controllers', [])
 
 
 // Feeds controller.
-.controller('FeedsCtrl', function($scope, BackendService, UserGridService) {
+.controller('FeedsCtrl', function($scope, BackendService, UserGridService, $ionicSlideBoxDelegate) {
     UserGridService.getClient().getLoggedInUser(function(err, data, user) {
       if(err) {
         // Error - could not get logged in user
@@ -183,12 +183,14 @@ angular.module('deepBlue.controllers', [])
                           feedList.push(matchingSnack);
                         }
                       });
+
                       $scope.dataModel = {
                         recommendedList: feedList.slice(0, 10)
                       }
                     }
                   });
               }
+
             });
           }
         }
@@ -210,6 +212,10 @@ angular.module('deepBlue.controllers', [])
 
   // Triggering the first refresh
   $scope.doRefresh();
+
+  $scope.updateSlides = function() {
+    $ionicSlideBoxDelegate.update();
+  }
 
 })
 
