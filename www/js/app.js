@@ -146,7 +146,7 @@ angular.module('deepBlue', ['ionic', 'deepBlue.controllers', 'deepBlue.services'
     views: {
       'menuContent': {
         templateUrl: 'templates/my-snack.html',
-        controller: 'ShoppingListCtrl'
+        controller: 'MySnacksCtrl'
       }
     }
   })
