@@ -24,18 +24,21 @@
       <div class="item item-image tile" style="border: 0; ">
         <img ng-src="{{feeds[0].image}}">
 
-        <a class="tab-item" style="position:absolute;top:5%;right:20%; zoom: 70%" on-tap="onTap()" >
-          <i class="icon ion-thumbsup"></i>
-        </a>
-        <a class="tab-item" style="position:absolute;top:7%;right:5%; zoom: 70%" on-tap="onTap()" >
-          <i class="icon ion-thumbsdown"></i>
-        </a>
+
 
         <div class="item item-text-wrap">
+          <h4 style="font-size: x-small; margin-right: 25%">{{feeds[0].name}}</h4>
           <p style="font-size: x-small">
             {{feeds[0].description}}
           </p>
         </div>
+
+        <a class="tab-item" style="position:absolute;top:51%;right:20%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
+          <i class="icon ion-thumbsup"></i>
+        </a>
+        <a class="tab-item" style="position:absolute;top:52%;right:5%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
+          <i class="icon ion-thumbsdown"></i>
+        </a>
       </div>
 
       <button class="button button-small button-block button-assertive" style="position:relative; width: 50%; margin-left: auto; margin-right: auto; z-index: 10000; top: -25px" >REQUEST!</button>
@@ -56,14 +59,15 @@
           <ion-slide ng-repeat="feed in dataModel.recommendedList" ng-init="updateSlides()">
             <div class="box blue"  style="width: inherit"><img src="{{feed.image}}" height="175" ></div>
 
-            <a class="tab-item" style="position:absolute;top:5%;right:20%; zoom: 70%" on-tap="onTap()" >
+            <a class="tab-item" style="position:absolute;top:45%;right:20%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
               <i class="icon ion-thumbsup"></i>
             </a>
-            <a class="tab-item" style="position:absolute;top:7%;right:5%; zoom: 70%" on-tap="onTap()" >
+            <a class="tab-item" style="position:absolute;top:46%;right:5%; zoom: 60%; z-index: 100005" on-tap="onTap()" >
               <i class="icon ion-thumbsdown"></i>
             </a>
 
             <div class="item item-text-wrap"  style="width: inherit" >
+              <h4 style="font-size: x-small; margin-right: 25%">{{feed.name}}</h4>
               <p style="font-size: x-small; height: 175px">
                 {{feed.description}}
               </p>
