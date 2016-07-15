@@ -2,7 +2,7 @@
   #TIP: in this case we hide the navbar provided by navigation system.
 -->
 <ion-view hide-nav-bar="true">
-  
+
   <!-- in our custom header bar we give a link to start screen -->
   <ion-header-bar style="background-color: #009688">
     <button ui-sref="app.start"><i class="white-color ion-arrow-left-c"></i></button>
@@ -21,10 +21,10 @@
     <div class="text-center" style="margin: 12% 7%">
       <p class="text-center">Please enter your username and password to start snackin'</p>
       <label class="item item-input" style="border-color: white; border-bottom-color: red">
-        <input type="text" placeholder="your username">
+        <input type="text" placeholder="your username" ng-model="user.username">
       </label>
       <label class="item item-input" style="border-color: white; border-bottom-color: red; margin-top: 1%">
-        <input type="password" placeholder="your password">
+        <input type="password" placeholder="your password" ng-model="user.password">
       </label>
       <!--
         #SIMPLIFIED-IMPLEMENTATION:

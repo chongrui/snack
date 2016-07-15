@@ -54,7 +54,7 @@
 
         <div>
           <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="false">
-            <ion-slide ng-repeat="feed in feeds">
+            <ion-slide ng-repeat="feed in dataModel.recommendedList">
               <div class="box blue"><img src="{{feed.image}}"></div>
 
               <a class="tab-item" style="position:absolute;top:5%;right:20%; zoom: 70%" on-tap="onTap()" >
@@ -86,7 +86,7 @@
 
     </div>
 
-
+  <img src="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTVDDDSgUAbIH4cpH3qByOSwkRYqja7xNkT2BeIdGRSGE46y1BF9D2zt1IoWxpwK9NS1wPiW4g8&amp;usqp=CAk">
 
   </ion-content>
 </ion-view>
